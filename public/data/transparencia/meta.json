@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-01T11:09:43+00:00",
+ "gerado_em": "2026-11-01T15:53:10+00:00",
  "siops": {
   "anos": [
    2020,
@@ -23,8 +23,8 @@
    "2024Q3"
   ]
  },
- "fonte": "SIOPS (siops-consulta-publica-api.saude.gov.br) e Sisab/Previne Brasil (dadosabertos.saude.gov.br)",
  "ufs": [
   51
- ]
+ ],
+ "fonte": "SIOPS (siops-consulta-publica-api.saude.gov.br) e Sisab/Previne Brasil (dadosabertos.saude.gov.br)"
 }
