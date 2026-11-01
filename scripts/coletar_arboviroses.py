@@ -75,6 +75,22 @@ def get_json(url: str, tentativas: int = 5):
     raise RuntimeError(f"Falhou {url}")
 
 
+# Código IBGE de 7 dígitos = 6 dígitos + dígito verificador (pesos 1-2-1-2-1-2, soma dos algarismos, módulo 10).
+# Conferido com a lista oficial do IBGE (5.571 municípios): só estes 9 fogem da regra.
+IBGE7_EXCECOES = {220191: 2201919, 220198: 2201988, 220225: 2202251, 261153: 2611533, 311783: 3117836,
+                  315213: 3152131, 430587: 4305871, 520393: 5203939, 520396: 5203962}
+
+
+def ibge7(c6: int) -> int:
+    if c6 in IBGE7_EXCECOES:
+        return IBGE7_EXCECOES[c6]
+    t = 0
+    for i, ch in enumerate(str(c6)):
+        p = int(ch) * (2 if i % 2 else 1)
+        t += p // 10 + p % 10
+    return c6 * 10 + (10 - t % 10) % 10
+
+
 def serie(geo7: int, doenca: str, ano_ini: int, ano_fim: int) -> dict[int, dict]:
     url = f"{API}?geocode={geo7}&disease={doenca}&format=json&ew_start=1&ew_end=53&ey_start={ano_ini}&ey_end={ano_fim}"
     return {int(x["SE"]): x for x in (get_json(url) or []) if x.get("SE")}
@@ -84,9 +100,8 @@ def main() -> int:
     print("Dengue, chikungunya e zika (InfoDengue)")
     hoje = date.today()
     ano_fim, ano_ini = hoje.year, hoje.year - 1
-    ibge = get_json(IBGE)
-    geo7 = {int(x["municipio-id"]) // 10: int(x["municipio-id"]) for x in ibge}
     mun = json.loads((RAIZ / "public" / "data" / "municipios.json").read_text("utf-8"))
+    geo7 = {m[0]: ibge7(m[0]) for m in mun}   # sem depender do site do IBGE, que não responde fora do Brasil
     por_uf: dict[int, list[int]] = defaultdict(list)
     escolha = ufs_escolhidas()
     print(f"   Estados: {'todos' if escolha is None else ', '.join(k for k, v in SIGLAS.items() if v in escolha)}")
