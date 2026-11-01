@@ -1,0 +1,539 @@
+{
+ "versao": "Calendário Nacional de Vacinação 2026",
+ "vigente_em": "2026-10-08",
+ "conferido_em": "2026-10-31",
+ "fontes": [
+  {
+   "nome": "Instrução Normativa do Calendário Nacional de Vacinação 2026 (4ª edição, 08/10/2026), Ministério da Saúde",
+   "url": "https://www.gov.br/saude/pt-br/vacinacao/publicacoes/instrucao-normativa-que-instrui-o-calendario-nacional-de-vacinacao-2026.pdf"
+  },
+  {
+   "nome": "Calendário de Vacinação, Ministério da Saúde",
+   "url": "https://www.gov.br/saude/pt-br/vacinacao/calendario"
+  },
+  {
+   "nome": "Calendário Técnico Nacional de Vacinação da Criança (atualizado em 30/01/2026)",
+   "url": "https://www.gov.br/saude/pt-br/composicao/svsa/pni/calendario-tecnico/calendario-tecnico-nacional-de-vacinacao-crianca"
+  },
+  {
+   "nome": "Calendários de Vacinação 2026, quadro por idade, SESA-ES (junho/2026)",
+   "url": "https://saude.es.gov.br/media/Imuniza%C3%A7%C3%A3o/Calend%C3%A1rio%20Nacional%20de%20imuniza%C3%A7%C3%A3o%20por%20idade%20-%20JUNHO%202026.xlsx%20-%20Quadro.pdf"
+  }
+ ],
+ "vacinas": {
+  "bcg": {
+   "nome": "BCG",
+   "protege": "Formas graves de tuberculose (miliar e meníngea)"
+  },
+  "hepb": {
+   "nome": "Hepatite B",
+   "protege": "Hepatite B"
+  },
+  "penta": {
+   "nome": "Pentavalente",
+   "protege": "Difteria, tétano, coqueluche, Haemophilus influenzae tipo b (Hib) e hepatite B"
+  },
+  "vip": {
+   "nome": "VIP (poliomielite inativada)",
+   "protege": "Poliomielite (paralisia infantil)"
+  },
+  "rota": {
+   "nome": "Rotavírus (oral)",
+   "protege": "Diarreia grave por rotavírus"
+  },
+  "vpc20": {
+   "nome": "Pneumocócica 20-valente",
+   "protege": "Pneumonia, otite, meningite e outras doenças causadas pelo pneumococo"
+  },
+  "vpc10": {
+   "nome": "Pneumocócica 10-valente",
+   "protege": "Pneumonia, otite, meningite e outras doenças causadas pelo pneumococo"
+  },
+  "menc": {
+   "nome": "Meningocócica C",
+   "protege": "Meningite e infecção generalizada pelo meningococo C"
+  },
+  "acwy": {
+   "nome": "Meningocócica ACWY",
+   "protege": "Meningite e infecção generalizada pelos meningococos A, C, W e Y"
+  },
+  "flu": {
+   "nome": "Influenza (gripe)",
+   "protege": "Gripe e suas complicações"
+  },
+  "covid": {
+   "nome": "Covid-19",
+   "protege": "Formas graves de covid-19"
+  },
+  "fa": {
+   "nome": "Febre amarela",
+   "protege": "Febre amarela"
+  },
+  "scr": {
+   "nome": "Tríplice viral (SCR)",
+   "protege": "Sarampo, caxumba e rubéola"
+  },
+  "var": {
+   "nome": "Varicela",
+   "protege": "Catapora (varicela)"
+  },
+  "hepa": {
+   "nome": "Hepatite A",
+   "protege": "Hepatite A"
+  },
+  "dtp": {
+   "nome": "DTP (tríplice bacteriana infantil)",
+   "protege": "Difteria, tétano e coqueluche"
+  },
+  "hpv": {
+   "nome": "HPV quadrivalente",
+   "protege": "Câncer do colo do útero, de ânus, pênis e garganta, e verrugas genitais causados pelo HPV"
+  },
+  "dengue": {
+   "nome": "Dengue",
+   "protege": "Dengue"
+  },
+  "dt": {
+   "nome": "dT (dupla adulto)",
+   "protege": "Difteria e tétano"
+  },
+  "dtpa": {
+   "nome": "dTpa (tríplice bacteriana acelular adulto)",
+   "protege": "Difteria, tétano e coqueluche, e protege o bebê contra a coqueluche nos primeiros meses"
+  },
+  "vsr": {
+   "nome": "VSR (vírus sincicial respiratório)",
+   "protege": "Bronquiolite e pneumonia pelo VSR no bebê nos primeiros 6 meses de vida"
+  },
+  "vpc20i": {
+   "nome": "Pneumocócica 20-valente",
+   "protege": "Pneumonia e outras doenças causadas pelo pneumococo"
+  }
+ },
+ "crianca": [
+  {
+   "meses": 0,
+   "rotulo": "Ao nascer",
+   "doses": [
+    {
+     "v": "bcg",
+     "dose": "Dose única",
+     "obs": "Na maternidade ou o quanto antes."
+    },
+    {
+     "v": "hepb",
+     "dose": "Dose ao nascer",
+     "obs": "De preferência nas primeiras 12 horas, até 30 dias de vida."
+    }
+   ]
+  },
+  {
+   "meses": 2,
+   "rotulo": "2 meses",
+   "doses": [
+    {
+     "v": "penta",
+     "dose": "1ª dose"
+    },
+    {
+     "v": "vip",
+     "dose": "1ª dose"
+    },
+    {
+     "v": "rota",
+     "dose": "1ª dose",
+     "obs": "Só pode ser dada até 11 meses e 29 dias. Depois disso, a criança perde as duas doses.",
+     "ate": 11
+    },
+    {
+     "v": "vpc20",
+     "dose": "1ª dose",
+     "obs": "Fase de transição entre as vacinas pneumocócicas 10 e 20-valente."
+    }
+   ]
+  },
+  {
+   "meses": 3,
+   "rotulo": "3 meses",
+   "doses": [
+    {
+     "v": "menc",
+     "dose": "1ª dose"
+    }
+   ]
+  },
+  {
+   "meses": 4,
+   "rotulo": "4 meses",
+   "doses": [
+    {
+     "v": "penta",
+     "dose": "2ª dose"
+    },
+    {
+     "v": "vip",
+     "dose": "2ª dose"
+    },
+    {
+     "v": "rota",
+     "dose": "2ª dose",
+     "obs": "Só pode ser dada até 23 meses e 29 dias.",
+     "ate": 23
+    },
+    {
+     "v": "vpc10",
+     "dose": "2ª dose",
+     "obs": "Fase de transição: a 2ª dose pode ser com a 10-valente."
+    }
+   ]
+  },
+  {
+   "meses": 5,
+   "rotulo": "5 meses",
+   "doses": [
+    {
+     "v": "menc",
+     "dose": "2ª dose"
+    }
+   ]
+  },
+  {
+   "meses": 6,
+   "rotulo": "6 meses",
+   "doses": [
+    {
+     "v": "penta",
+     "dose": "3ª dose"
+    },
+    {
+     "v": "vip",
+     "dose": "3ª dose"
+    },
+    {
+     "v": "flu",
+     "dose": "1ª dose",
+     "obs": "Na primeira vez, 2 doses com 30 dias de intervalo. Depois, 1 dose por ano até 5 anos, 11 meses e 29 dias.",
+     "ate": 71
+    },
+    {
+     "v": "covid",
+     "dose": "1ª dose",
+     "obs": "Esquema de 6 meses a 4 anos: 3 doses (6, 7 e 9 meses) com a Pfizer ou 2 doses (6 e 7 meses) com a Moderna.",
+     "ate": 59
+    }
+   ]
+  },
+  {
+   "meses": 7,
+   "rotulo": "7 meses",
+   "doses": [
+    {
+     "v": "covid",
+     "dose": "2ª dose",
+     "ate": 59
+    },
+    {
+     "v": "flu",
+     "dose": "2ª dose",
+     "obs": "Só no primeiro ano em que a criança é vacinada contra a gripe, 30 dias após a 1ª.",
+     "ate": 71
+    }
+   ]
+  },
+  {
+   "meses": 9,
+   "rotulo": "9 meses",
+   "doses": [
+    {
+     "v": "fa",
+     "dose": "1 dose"
+    },
+    {
+     "v": "covid",
+     "dose": "3ª dose",
+     "obs": "Só para quem tomou a vacina da Pfizer.",
+     "ate": 59
+    }
+   ]
+  },
+  {
+   "meses": 12,
+   "rotulo": "12 meses",
+   "doses": [
+    {
+     "v": "scr",
+     "dose": "1ª dose"
+    },
+    {
+     "v": "vpc20",
+     "dose": "Reforço"
+    },
+    {
+     "v": "acwy",
+     "dose": "Reforço"
+    }
+   ]
+  },
+  {
+   "meses": 15,
+   "rotulo": "15 meses",
+   "doses": [
+    {
+     "v": "dtp",
+     "dose": "1º reforço"
+    },
+    {
+     "v": "vip",
+     "dose": "1º reforço"
+    },
+    {
+     "v": "hepa",
+     "dose": "Dose única",
+     "obs": "Se atrasou, pode tomar até 4 anos, 11 meses e 29 dias.",
+     "ate": 59
+    },
+    {
+     "v": "scr",
+     "dose": "2ª dose"
+    },
+    {
+     "v": "var",
+     "dose": "1ª dose",
+     "obs": "Se atrasou, pode tomar até 6 anos, 11 meses e 29 dias (indígenas, sem limite de idade).",
+     "ate": 83
+    }
+   ]
+  },
+  {
+   "meses": 48,
+   "rotulo": "4 anos",
+   "doses": [
+    {
+     "v": "dtp",
+     "dose": "2º reforço"
+    },
+    {
+     "v": "vip",
+     "dose": "2º reforço"
+    },
+    {
+     "v": "var",
+     "dose": "2ª dose",
+     "ate": 83
+    },
+    {
+     "v": "fa",
+     "dose": "Reforço"
+    }
+   ]
+  },
+  {
+   "meses": 108,
+   "rotulo": "9 anos",
+   "doses": [
+    {
+     "v": "hpv",
+     "dose": "Dose única",
+     "obs": "Meninas e meninos de 9 a 14 anos, 11 meses e 29 dias.",
+     "ate": 179
+    }
+   ]
+  }
+ ],
+ "grupos": {
+  "adolescente": {
+   "rotulo": "Adolescentes e jovens",
+   "faixa": "10 a 24 anos",
+   "de": 120,
+   "ate": 299,
+   "itens": [
+    {
+     "v": "hpv",
+     "dose": "Dose única",
+     "quando": "9 a 14 anos",
+     "obs": "Quem tem de 15 a 19 anos e nunca tomou pode tomar em estratégia de resgate, conforme o estado.",
+     "de": 108,
+     "ate": 239
+    },
+    {
+     "v": "acwy",
+     "dose": "Dose única ou reforço",
+     "quando": "11 a 14 anos",
+     "de": 132,
+     "ate": 179
+    },
+    {
+     "v": "dengue",
+     "dose": "2 doses, com 3 meses de intervalo",
+     "quando": "10 a 14 anos",
+     "obs": "Oferta conforme a estratégia do seu estado e município.",
+     "de": 120,
+     "ate": 179
+    },
+    {
+     "v": "hepb",
+     "dose": "3 doses",
+     "quando": "Se não tiver o esquema completo",
+     "obs": "Intervalos de 0, 1 e 6 meses. Não precisa reiniciar o esquema."
+    },
+    {
+     "v": "dt",
+     "dose": "3 doses ou reforço",
+     "quando": "Reforço aos 14 anos e depois conforme a caderneta",
+     "obs": "Quem tem as doses de criança (DTP) toma o reforço aos 14 anos e depois 1 a cada 10 anos (a cada 5 anos em caso de ferimento com risco de tétano). Sem esquema: 3 doses com 60 dias de intervalo."
+    },
+    {
+     "v": "scr",
+     "dose": "2 doses",
+     "quando": "Até 29 anos, se não tiver comprovação"
+    },
+    {
+     "v": "fa",
+     "dose": "1 dose",
+     "quando": "Se nunca foi vacinado",
+     "obs": "Quem tomou só 1 dose antes dos 5 anos deve tomar 1 reforço."
+    }
+   ]
+  },
+  "adulto": {
+   "rotulo": "Adultos",
+   "faixa": "25 a 59 anos",
+   "de": 300,
+   "ate": 719,
+   "itens": [
+    {
+     "v": "hepb",
+     "dose": "3 doses",
+     "quando": "Se não tiver o esquema completo",
+     "obs": "Intervalos de 0, 1 e 6 meses. Não precisa reiniciar o esquema."
+    },
+    {
+     "v": "dt",
+     "dose": "3 doses ou reforço",
+     "quando": "Conforme a caderneta",
+     "obs": "Sem esquema: 3 doses com 60 dias de intervalo. Com esquema: reforço a cada 10 anos (a cada 5 anos em caso de ferimento com risco de tétano)."
+    },
+    {
+     "v": "fa",
+     "dose": "1 dose",
+     "quando": "Se nunca foi vacinado (até 59 anos)",
+     "obs": "Quem tomou só 1 dose antes dos 5 anos deve tomar 1 reforço."
+    },
+    {
+     "v": "scr",
+     "dose": "2 doses até 29 anos; 1 dose de 30 a 59 anos",
+     "quando": "Se não tiver comprovação",
+     "obs": "Trabalhadores da saúde: 2 doses em qualquer idade."
+    },
+    {
+     "v": "flu",
+     "dose": "1 dose por ano",
+     "quando": "Grupos prioritários",
+     "obs": "Por exemplo: trabalhadores da saúde, professores e pessoas com doenças crônicas."
+    },
+    {
+     "v": "covid",
+     "dose": "1 dose por ano",
+     "quando": "Grupos prioritários",
+     "obs": "Pessoas com comorbidades e trabalhadores da saúde, entre outros. Imunocomprometidos, a cada 6 meses."
+    }
+   ]
+  },
+  "idoso": {
+   "rotulo": "Pessoas idosas",
+   "faixa": "60 anos ou mais",
+   "de": 720,
+   "ate": 1800,
+   "itens": [
+    {
+     "v": "flu",
+     "dose": "1 dose por ano",
+     "quando": "Todo ano, na campanha"
+    },
+    {
+     "v": "covid",
+     "dose": "1 dose a cada 6 meses",
+     "quando": "A partir de 60 anos"
+    },
+    {
+     "v": "vpc20i",
+     "dose": "1 dose",
+     "quando": "A partir de 85 anos, ou de 60 a 84 anos se acamado ou morando em instituição de longa permanência",
+     "obs": "Também para povos indígenas sem histórico vacinal."
+    },
+    {
+     "v": "hepb",
+     "dose": "3 doses",
+     "quando": "Se não tiver o esquema completo",
+     "obs": "Intervalos de 0, 1 e 6 meses."
+    },
+    {
+     "v": "dt",
+     "dose": "3 doses ou reforço",
+     "quando": "Conforme a caderneta",
+     "obs": "Reforço a cada 10 anos (a cada 5 anos em caso de ferimento com risco de tétano)."
+    },
+    {
+     "v": "fa",
+     "dose": "1 dose",
+     "quando": "Só em casos excepcionais",
+     "obs": "Para quem nunca foi vacinado e mora ou vai viajar para área com circulação do vírus, após avaliação no serviço de saúde."
+    }
+   ]
+  },
+  "gestante": {
+   "rotulo": "Gestantes",
+   "faixa": "Em cada gestação",
+   "itens": [
+    {
+     "v": "hepb",
+     "dose": "3 doses",
+     "quando": "Ao saber da gravidez, se não tiver o esquema completo",
+     "obs": "Pode completar até 45 dias após o parto."
+    },
+    {
+     "v": "dt",
+     "dose": "3 doses ou reforço",
+     "quando": "Ao saber da gravidez, se não tiver o esquema completo",
+     "obs": "Uma das doses deve ser a dTpa, a partir da 20ª semana."
+    },
+    {
+     "v": "dtpa",
+     "dose": "1 dose em cada gestação",
+     "quando": "A partir da 20ª semana",
+     "obs": "Se não for possível na gravidez, até 45 dias após o parto."
+    },
+    {
+     "v": "vsr",
+     "dose": "1 dose em cada gestação",
+     "quando": "A partir da 28ª semana",
+     "obs": "Não é aplicada durante o trabalho de parto."
+    },
+    {
+     "v": "flu",
+     "dose": "1 dose",
+     "quando": "Em qualquer fase da gestação, na temporada",
+     "obs": "Se não for possível na gravidez, até 45 dias após o parto."
+    },
+    {
+     "v": "covid",
+     "dose": "1 dose em cada gestação",
+     "quando": "Em qualquer fase da gestação"
+    },
+    {
+     "v": "fa",
+     "dose": "1 dose",
+     "quando": "Só em casos excepcionais",
+     "obs": "Apenas com alto risco de exposição, após avaliação do serviço de saúde."
+    }
+   ]
+  }
+ },
+ "avisos": [
+  "Leve sempre a caderneta de vacinação. Se perdeu, a sala de vacina pode consultar o histórico.",
+  "Vacina atrasada não precisa recomeçar: o esquema é completado de onde parou.",
+  "Pessoas com doenças ou condições especiais podem ter vacinas extras no CRIE (Centro de Referência para Imunobiológicos Especiais).",
+  "Este resumo não substitui a orientação da equipe de saúde. Confirme na sala de vacina."
+ ],
+ "notas_campos": "Idades em meses completos. 'ate' = última idade (em meses completos) em que a dose ainda pode ser aplicada; 'de' = idade mínima."
+}

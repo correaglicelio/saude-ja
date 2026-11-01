@@ -1,0 +1,27 @@
+{
+ "gerado_em": "2026-11-01T12:14:11+00:00",
+ "arquivos": {
+  "2025": "26/10/2026",
+  "2026": "19/10/2026"
+ },
+ "ultima_semana": 202642,
+ "anos": [
+  2025,
+  2026
+ ],
+ "ufs": [
+  51
+ ],
+ "campos": [
+  "casos",
+  "obitos",
+  "influenza",
+  "covid",
+  "vsr",
+  "outros",
+  "nao_especificado",
+  "criancas_0_4",
+  "idosos_60"
+ ],
+ "fonte": "SIVEP-Gripe, banco de SRAG do Ministério da Saúde (OpenDataSUS)"
+}

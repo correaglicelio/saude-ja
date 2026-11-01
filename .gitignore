@@ -1,0 +1,7 @@
+build/
+__pycache__/
+work/
+*.pyc
+cnes-unidades-brasil.json.gz
+*.part
+*.tmp

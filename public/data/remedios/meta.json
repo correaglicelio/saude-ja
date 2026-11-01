@@ -1,0 +1,195 @@
+{
+ "atualizado_em": "2026-10-31T18:10:58+00:00",
+ "fp": {
+  "meses": [
+   "201612",
+   "201712",
+   "201812",
+   "201912",
+   "202012",
+   "202112",
+   "202212",
+   "202312",
+   "202412",
+   "202512",
+   "202608"
+  ],
+  "indicadores": {
+   "pfpbben": "Total de pessoas atendidas",
+   "sntpbh": "Hipertensão",
+   "sntpbd": "Diabetes",
+   "sntpdhc": "Hipertensão e diabetes juntas",
+   "sntpba": "Asma",
+   "sntpbos": "Osteoporose",
+   "sntpbcon": "Contracepção",
+   "pfpbdm": "Absorventes (Dignidade Menstrual)",
+   "pfpbbfam": "Beneficiários do Bolsa Família"
+  },
+  "brasil": {
+   "pfpbben": [
+    9962443.0,
+    9754242.0,
+    9207856.0,
+    9616656.0,
+    7980044.0,
+    8394475.0,
+    8384592.0,
+    9272836.0,
+    10317346.0,
+    11942618.0,
+    12910046.0
+   ],
+   "sntpbh": [
+    5438310.0,
+    5286999.0,
+    4843833.0,
+    4924102.0,
+    4047246.0,
+    4125140.0,
+    4052855.0,
+    4299533.0,
+    4401107.0,
+    4730551.0,
+    4957031.0
+   ],
+   "sntpbd": [
+    1304604.0,
+    1293650.0,
+    1294682.0,
+    1404338.0,
+    1197226.0,
+    1317011.0,
+    1389422.0,
+    1523545.0,
+    1575297.0,
+    1737145.0,
+    1806802.0
+   ],
+   "sntpdhc": [
+    1941570.0,
+    1978601.0,
+    1978905.0,
+    2164988.0,
+    1839477.0,
+    2001227.0,
+    2019143.0,
+    2467019.0,
+    2649428.0,
+    3037114.0,
+    3237902.0
+   ],
+   "sntpba": [
+    427416.0,
+    466001.0,
+    480354.0,
+    508594.0,
+    420597.0,
+    546395.0,
+    586360.0,
+    673637.0,
+    739143.0,
+    720561.0,
+    873568.0
+   ],
+   "sntpbos": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    102405.0,
+    121825.0,
+    162189.0,
+    193206.0
+   ],
+   "sntpbcon": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    76450.0,
+    107883.0,
+    96690.0,
+    62149.0
+   ],
+   "pfpbdm": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    418786.0,
+    446725.0,
+    482534.0
+   ],
+   "pfpbbfam": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    986274.0,
+    1420681.0,
+    1539712.0,
+    1691522.0
+   ]
+  },
+  "fonte": "https://dadosabertos.saude.gov.br/dataset/mgdi-programa-farmacia-popular-do-brasil"
+ },
+ "precos": {
+  "periodo": "26/10/2025 a 26/10/2026",
+  "fonte": "https://dadosabertos.saude.gov.br/dataset/bps",
+  "campos_item": [
+   "catmat",
+   "nome",
+   "pdm",
+   "unidade",
+   "compras",
+   "p25",
+   "mediana",
+   "p75",
+   "por_uf {uf: [compras, mediana]}"
+  ],
+  "campos_compra": [
+   "catmat",
+   "unidade",
+   "data",
+   "instituicao",
+   "municipio",
+   "esfera",
+   "quantidade",
+   "preco_unitario",
+   "modalidade",
+   "fornecedor"
+  ]
+ },
+ "pcdt": {
+  "fonte": "https://dadosabertos.saude.gov.br/dataset/pcdt-protocolos-clinicos-e-diretrizes-terapeuticas"
+ },
+ "estoque": {
+  "data_posicao": "2026/06/05",
+  "arquivo": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/bnafar/csv/Posicao_Estoque_csv_06-06-2026.zip",
+  "fonte": "https://dadosabertos.saude.gov.br/dataset/bnafar-posicao-de-estoque",
+  "campos_estabelecimento": [
+   "mun",
+   "nome",
+   "endereco",
+   "bairro",
+   "telefone",
+   "lat",
+   "lng",
+   "central",
+   "itens [indice_produto, quantidade]"
+  ]
+ }
+}

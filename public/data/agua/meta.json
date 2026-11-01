@@ -1,0 +1,89 @@
+{
+ "atualizado_em": "2026-10-31T17:23:19+00:00",
+ "fontes": [
+  "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/controle_mensal_parametros_basicos_2026_csv.zip",
+  "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SISAGUA/vigilancia_parametros_basicos_2026_csv.zip"
+ ],
+ "recentes": [
+  202607,
+  202608,
+  202609
+ ],
+ "serie": [
+  202601,
+  202602,
+  202603,
+  202604,
+  202605,
+  202606,
+  202607,
+  202608,
+  202609
+ ],
+ "brasil": {
+  "ctl": {
+   "ec": [
+    318658,
+    572
+   ],
+   "ct": [
+    322705,
+    3388
+   ],
+   "cl": [
+    977326,
+    27089,
+    6103
+   ],
+   "tu": [
+    399293,
+    4977
+   ]
+  },
+  "vig": {
+   "ec": [
+    103691,
+    2685
+   ],
+   "ct": [
+    103471,
+    12691
+   ],
+   "cl": [
+    104497,
+    10376,
+    1580
+   ],
+   "tu": [
+    98263,
+    3030
+   ]
+  },
+  "alt": {
+   "ec": [
+    24320,
+    5415
+   ],
+   "ct": [
+    24114,
+    12867
+   ],
+   "cl": [
+    9419,
+    3052,
+    43
+   ],
+   "tu": [
+    23307,
+    1363
+   ]
+  }
+ },
+ "campos": {
+  "ec": "E. coli [amostras, presença]",
+  "ct": "Coliformes totais [amostras, presença]",
+  "cl": "Cloro residual livre [amostras, < 0,2 mg/L, > 5,0 mg/L]",
+  "tu": "Turbidez [amostras, > 5,0 uT]",
+  "s": "série mensal [aaaamm, ctl E.coli amostras, ctl presença, vig amostras, vig presença, ctl cloro amostras, ctl cloro < 0,2]"
+ }
+}

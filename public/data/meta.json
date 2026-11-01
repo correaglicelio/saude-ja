@@ -1,0 +1,61 @@
+{
+ "atualizado_em": "2026-10-31T16:58:56+00:00",
+ "fonte": "https://apidadosabertos.saude.gov.br/cnes/estabelecimentos",
+ "campos": [
+  "cnes",
+  "nome",
+  "tipo",
+  "municipio",
+  "lat",
+  "lng",
+  "endereco",
+  "numero",
+  "bairro",
+  "cep",
+  "telefone",
+  "sus",
+  "turno",
+  "hospitalar",
+  "esfera",
+  "atualizado",
+  "leitos"
+ ],
+ "leitos_campos": [
+  "LEITOS_EXISTENTES",
+  "LEITOS_SUS",
+  "UTI_TOTAL_EXIST",
+  "UTI_TOTAL_SUS",
+  "UTI_ADULTO_EXIST",
+  "UTI_PEDIATRICO_EXIST",
+  "UTI_NEONATAL_EXIST"
+ ],
+ "leitos_competencia": "202609",
+ "populacao_ano": "2026",
+ "brasil": {
+  "unidades": 78701,
+  "populacao": 214211951,
+  "leitos_existentes": 523581,
+  "leitos_sus": 354806,
+  "uti_total_exist": 64010,
+  "uti_total_sus": 32103,
+  "uti_adulto_exist": 44097,
+  "uti_pediatrico_exist": 7719,
+  "uti_neonatal_exist": 9880
+ },
+ "tipos": {
+  "1": "Posto de saúde",
+  "2": "Unidade básica (UBS)",
+  "4": "Policlínica",
+  "5": "Hospital geral",
+  "7": "Hospital especializado",
+  "15": "Unidade mista",
+  "20": "Pronto-socorro geral",
+  "21": "Pronto-socorro especializado",
+  "61": "Centro de parto normal",
+  "62": "Hospital-dia",
+  "70": "CAPS",
+  "73": "Pronto atendimento (UPA)",
+  "85": "Centro de imunização"
+ },
+ "total": 78701
+}

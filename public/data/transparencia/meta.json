@@ -1,0 +1,30 @@
+{
+ "gerado_em": "2026-11-01T11:09:43+00:00",
+ "siops": {
+  "anos": [
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "atual": {
+   "ano": 2026,
+   "periodo": "18",
+   "descricao": "4º bimestre",
+   "chave": "2026-18"
+  }
+ },
+ "previne": {
+  "quadrimestres": [
+   "2024Q1",
+   "2024Q2",
+   "2024Q3"
+  ]
+ },
+ "fonte": "SIOPS (siops-consulta-publica-api.saude.gov.br) e Sisab/Previne Brasil (dadosabertos.saude.gov.br)",
+ "ufs": [
+  51
+ ]
+}
