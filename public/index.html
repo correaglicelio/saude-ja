@@ -1053,7 +1053,11 @@ button.kpi[aria-pressed="true"]{border-color:var(--signal); box-shadow:0 0 0 2px
   .bar{grid-template-columns:minmax(96px, 130px) 1fr 52px}
   #cidade{width:100%}
   .field.grow{flex:1 1 0}
-  .where .btn{flex:1}
+  .where .btn{flex:0 0 auto}
+  /* no celular, "Perto de mim" vira só o ícone para o campo do município ficar maior */
+  #gps{width:44px; height:40px; padding:0; justify-content:center}
+  #gps .gps-txt{display:none}
+  #gps svg{width:22px; height:22px}
   .tabbar{display:grid; grid-template-columns:repeat(9,minmax(0,1fr)); background:var(--surface); border-top:1px solid var(--line);
     padding-bottom:env(safe-area-inset-bottom,0px); padding-left:env(safe-area-inset-left,0px); padding-right:env(safe-area-inset-right,0px)}
   .tabbar button{border:0; background:transparent; padding:8px 0 10px; min-width:0; display:flex; flex-direction:column; align-items:center; gap:2px; font-size:11.5px; letter-spacing:-.01em; font-weight:700; color:var(--muted)}
@@ -1348,9 +1352,9 @@ line.ar-gl{stroke:var(--line); stroke-width:1}
     <div class="field"><label for="uf">Estado</label><select id="uf"></select></div>
     <div class="field grow"><label for="cidade">Município</label>
       <input id="cidade" list="cidades" placeholder="Digite o nome da cidade" autocomplete="off"><datalist id="cidades"></datalist></div>
-    <button class="btn primary" id="gps" type="button">
+    <button class="btn primary" id="gps" type="button" title="Perto de mim (usar minha localização)" aria-label="Perto de mim: usar minha localização">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
-      Perto de mim</button>
+      <span class="gps-txt">Perto de mim</span></button>
     <p class="note" id="note" role="status"></p>
   </section>
 
