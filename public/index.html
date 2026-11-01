@@ -1213,6 +1213,15 @@ line.ar-gl{stroke:var(--line); stroke-width:1}
 @media (max-width: 640px){ .ar-hero-t{grid-template-columns:repeat(2, minmax(0,1fr))} .ar-hero-t b{font-size:24px} }
 @media (max-width: 430px){ .tabbar button{font-size:9.5px; letter-spacing:-.03em} .tabbar button .dico{width:21px; height:21px} }
 @media (max-width: 380px){ .tabbar button{font-size:8.6px; letter-spacing:-.04em; white-space:nowrap} .tabbar button .dico{width:20px; height:20px} }
+/* ---------- sugestões de município ---------- */
+.ac{position:relative; min-width:0}
+.ac-lista{position:absolute; left:0; right:0; top:calc(100% + 4px); z-index:1500; margin:0; padding:4px; list-style:none; background:var(--surface);
+  border:1px solid var(--line); border-radius:10px; box-shadow:0 10px 28px rgb(0 0 0 / .18); max-height:min(330px, 45vh); overflow-y:auto; min-width:220px}
+.ac-lista li{padding:11px 12px; border-radius:8px; cursor:pointer; font-size:15px; line-height:1.2}
+.ac-lista li[aria-selected="true"]{background:var(--sel)}
+.ac-lista li:hover{background:var(--sel)}
+.ac-lista mark{background:none; color:var(--accent); font-weight:700}
+.ac-lista .ac-vazio{color:var(--muted); cursor:default; font-size:14px}
 /* ---------- puxar para atualizar ---------- */
 .ptr{position:fixed; top:-46px; left:50%; z-index:2000; width:40px; height:40px; border-radius:50%; background:var(--surface); color:var(--accent);
   box-shadow:0 3px 12px rgb(0 0 0 / .22); display:grid; place-items:center; opacity:0; transform:translate(-50%, 0); pointer-events:none;
@@ -1351,7 +1360,7 @@ line.ar-gl{stroke:var(--line); stroke-width:1}
   <section class="where" aria-label="Escolher local">
     <div class="field"><label for="uf">Estado</label><select id="uf"></select></div>
     <div class="field grow"><label for="cidade">Município</label>
-      <input id="cidade" list="cidades" placeholder="Digite o nome da cidade" autocomplete="off"><datalist id="cidades"></datalist></div>
+      <div class="ac"><input id="cidade" placeholder="Digite o nome da cidade" autocomplete="off" autocapitalize="words" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="cidades-ac"><ul id="cidades-ac" class="ac-lista" role="listbox" aria-label="Municípios" hidden></ul></div></div>
     <button class="btn primary" id="gps" type="button" title="Perto de mim (usar minha localização)" aria-label="Perto de mim: usar minha localização">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
       <span class="gps-txt">Perto de mim</span></button>
@@ -3565,9 +3574,50 @@ async function renderResumo(){
 function irPara(v){ if (innerWidth <= 820) setMobile(v === "encontrar" ? "lista" : v); else setView(v); }
 
 /* ===================== local ===================== */
+let CID_UF = [];
 function preencherCidades(){
-  const dl = $("#cidades");
-  dl.innerHTML = MUN.filter(m => m[2] === S.uf).sort((a, b) => a[1].localeCompare(b[1], "pt-BR")).map(m => `<option value="${esc(m[1])}"></option>`).join("");
+  CID_UF = MUN.filter(m => m[2] === S.uf).sort((a, b) => a[1].localeCompare(b[1], "pt-BR")).map(m => ({m, n: semAcento(m[1])}));
+  acFechar();
+}
+/* lista de sugestões própria do app (a lista nativa do navegador fica estranha dentro do app Android) */
+let acItens = [], acPos = -1;
+function acFechar(){
+  const ul = $("#cidades-ac"); if (!ul) return;
+  ul.hidden = true; ul.innerHTML = ""; acItens = []; acPos = -1;
+  $("#cidade")?.setAttribute("aria-expanded", "false");
+}
+function acMostrar(){
+  const cid = $("#cidade"), ul = $("#cidades-ac"), q = semAcento(cid.value.trim());
+  if (!q){ acFechar(); return; }
+  const comeca = [], contem = [];
+  for (const c of CID_UF){
+    if (c.n.startsWith(q)) comeca.push(c);
+    else if (c.n.includes(" " + q) || (q.length >= 3 && c.n.includes(q))) contem.push(c);
+  }
+  acItens = comeca.concat(contem).slice(0, 8);
+  if (!acItens.length){ ul.innerHTML = `<li class="ac-vazio" role="presentation">Nenhum município de ${esc(UF_NOME[UF[S.uf]])} com esse nome</li>`; ul.hidden = false; acPos = -1; return; }
+  if (acItens.length === 1 && acItens[0].n === q && acItens[0].m[0] === S.mun){ acFechar(); return; }
+  acPos = 0;
+  ul.innerHTML = acItens.map((c, i) => {
+    const nome = c.m[1], k = c.n.indexOf(q);
+    const marcado = k >= 0 ? esc(nome.slice(0, k)) + "<mark>" + esc(nome.slice(k, k + q.length)) + "</mark>" + esc(nome.slice(k + q.length)) : esc(nome);
+    return `<li role="option" id="ac-${i}" data-i="${i}" aria-selected="${i === acPos}">${marcado}</li>`;
+  }).join("");
+  ul.hidden = false; cid.setAttribute("aria-expanded", "true"); cid.setAttribute("aria-activedescendant", "ac-0");
+}
+function acMover(d){
+  if (!acItens.length) return;
+  acPos = (acPos + d + acItens.length) % acItens.length;
+  $("#cidades-ac").querySelectorAll("li[data-i]").forEach(li => li.setAttribute("aria-selected", +li.dataset.i === acPos));
+  $("#cidade").setAttribute("aria-activedescendant", "ac-" + acPos);
+  $("#ac-" + acPos)?.scrollIntoView({block: "nearest"});
+}
+function acEscolher(i){
+  const c = acItens[i]; if (!c) return;
+  const cid = $("#cidade");
+  cid.value = c.m[1]; acFechar();
+  escolherCidade(c.m[1]);
+  cid.blur();   // no celular, fecha o teclado
 }
 async function trocarUF(uf, {manterMun} = {}){
   S.uf = uf; $("#uf").value = uf;
@@ -3717,7 +3767,25 @@ function ligar(){
   $("#uf").addEventListener("change", e => trocarUF(+e.target.value));
   const cid = $("#cidade");
   cid.addEventListener("change", () => { if (cid.value && !escolherCidade(cid.value)) nota("Não encontrei esse município em " + UF_NOME[UF[S.uf]] + ". Escolha um nome da lista.", true); if (!cid.value){ S.mun = null; S.origem = null; S.origemTipo = null; aplicar(true); salvarLocal(); } });
-  cid.addEventListener("input", () => { if (MUN.some(m => m[2] === S.uf && m[1] === cid.value)) escolherCidade(cid.value); });
+  cid.addEventListener("input", acMostrar);
+  // ao tocar no campo ele fica vazio para digitar outra cidade; se sair sem digitar, a cidade volta
+  let antes = "", digitou = false;
+  const PH = cid.getAttribute("placeholder");
+  cid.addEventListener("focus", () => { antes = cid.value; digitou = false; if (antes){ cid.placeholder = antes; cid.value = ""; } });
+  cid.addEventListener("input", () => { digitou = true; });
+  cid.addEventListener("blur", () => {
+    setTimeout(acFechar, 150);
+    if (!digitou && !cid.value && antes) cid.value = antes;
+    cid.placeholder = PH;
+  });
+  cid.addEventListener("keydown", e => {
+    if (e.key === "ArrowDown"){ e.preventDefault(); if ($("#cidades-ac").hidden) acMostrar(); else acMover(1); }
+    else if (e.key === "ArrowUp"){ e.preventDefault(); acMover(-1); }
+    else if (e.key === "Enter"){ if (!$("#cidades-ac").hidden && acItens.length){ e.preventDefault(); acEscolher(Math.max(acPos, 0)); } }
+    else if (e.key === "Escape") acFechar();
+  });
+  // pointerdown escolhe antes de o campo perder o foco
+  $("#cidades-ac").addEventListener("pointerdown", e => { const li = e.target.closest("li[data-i]"); if (li){ e.preventDefault(); acEscolher(+li.dataset.i); } });
   $("#gps").addEventListener("click", pertoDeMim);
 
   $("#chips").innerHTML = GRUPOS.map(g => `<button type="button" class="chip" data-g="${g.id}" aria-pressed="true" style="--c:var(--g-${g.id})"><i></i>${g.nome}</button>`).join("");
