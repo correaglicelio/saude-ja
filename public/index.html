@@ -1087,9 +1087,15 @@ table th{font-weight:600}
 .tog input{accent-color:var(--verde)}
 [data-tema="agua"]{--c1:#1F6FE0; --c2:#A8C8F6}
 [data-tema="remedio"]{--c1:#7A3E8F; --c2:#DCC0E6}
-.tabbar button .dico{width:24px; height:24px; --c1:var(--muted); --c2:color-mix(in srgb, var(--muted) 30%, var(--surface))}
-.tabbar button[aria-pressed="true"] .dico{--c1:var(--verde); --c2:color-mix(in srgb, var(--verde) 40%, var(--surface))}
-.tabbar button[aria-pressed="true"]{color:var(--ink)}
+/* cada botão com a cor do seu módulo, como no menu lateral do site */
+.tabbar button{--tc:var(--accent); position:relative}
+.tabbar button[data-m="agua"]{--tc:#1F6FE0} .tabbar button[data-m="remedios"]{--tc:#7A3E8F} .tabbar button[data-m="vacinas"]{--tc:var(--verde)}
+.tabbar button[data-m="arbo"]{--tc:#65751D} .tabbar button[data-m="sangue"]{--tc:#D7263D} .tabbar button[data-m="transparencia"]{--tc:#B7791F}
+.tabbar button .dico{width:24px; height:24px; --c1:var(--tc); --c2:color-mix(in srgb, var(--tc) 38%, var(--surface))}
+.tabbar button[aria-pressed="true"]{color:var(--tc)}
+.tabbar button[aria-pressed="true"]::before{content:""; position:absolute; top:-1px; left:20%; right:20%; height:3px; border-radius:0 0 3px 3px; background:var(--tc)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .tabbar button[data-m="agua"]{--tc:#5B9BF2} :root:not([data-theme="light"]) .tabbar button[data-m="remedios"]{--tc:#C08AD8} :root:not([data-theme="light"]) .tabbar button[data-m="arbo"]{--tc:#AFC04F} :root:not([data-theme="light"]) .tabbar button[data-m="sangue"]{--tc:#F2667A} :root:not([data-theme="light"]) .tabbar button[data-m="transparencia"]{--tc:#E3AA4E} }
+:root[data-theme="dark"] .tabbar button[data-m="agua"]{--tc:#5B9BF2} :root[data-theme="dark"] .tabbar button[data-m="remedios"]{--tc:#C08AD8} :root[data-theme="dark"] .tabbar button[data-m="arbo"]{--tc:#AFC04F} :root[data-theme="dark"] .tabbar button[data-m="sangue"]{--tc:#F2667A} :root[data-theme="dark"] .tabbar button[data-m="transparencia"]{--tc:#E3AA4E}
 .top{background:var(--surface)}
 @media (max-width: 820px){
   .top{background:var(--tile2); border-bottom:0; color:#fff}
