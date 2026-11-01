@@ -1825,6 +1825,11 @@ async function salvar(nome, data){
     return;
   }
   const blob = data instanceof Blob ? data : new Blob([data]);
+  if (window.SaudeJaAndroid?.salvar){   // dentro do app Android: o app salva em Downloads
+    const b64 = await new Promise((ok, erro) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1] || ""); r.onerror = erro; r.readAsDataURL(blob); });
+    window.SaudeJaAndroid.salvar(nome, b64, blob.type || "application/octet-stream");
+    return;
+  }
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = nome; document.body.append(a); a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
   toast("Download iniciado");

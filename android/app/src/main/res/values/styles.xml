@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="petroleo">#06373A</color>
+    <color name="fundo">#F4F6F8</color>
+    <style name="Tema" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/petroleo</item>
+        <item name="android:statusBarColor">@color/petroleo</item>
+        <item name="android:navigationBarColor">@color/petroleo</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

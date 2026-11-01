@@ -5,3 +5,13 @@ work/
 cnes-unidades-brasil.json.gz
 *.part
 *.tmp
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/app/release/
+*.jks
+*.keystore
