@@ -1517,7 +1517,7 @@ const LT = r => Array.isArray(r[C.leitos]) ? r[C.leitos] : null;
 
 /* ===================== estado ===================== */
 const S = {
-  uf: 53, mun: null, origem: null, origemTipo: null,
+  uf: 51, mun: null, origem: null, origemTipo: null,
   grupos: new Set(GRUPOS.map(g => g.id)), sus: true, h24: false, uti: false, q: "", remQ: "", remProd: null, remCnes: null, remEscopo: "mun", remModo: "cidadao", vacNasc: null, vacSem: null, vacModo: "nasc", vacGrupo: "crianca", vacPainel: "cidadao", vacInd: "penta",
   view: "encontrar", mobile: "lista", limite: 60, sel: null,
   rows: [], filtradas: [],
@@ -3765,9 +3765,11 @@ async function iniciar(){
     if (window.L) iniciarMapa(estados); else nota("O mapa não carregou. A lista funciona normalmente.", true);
   } catch { nota("Não foi possível carregar a lista de municípios. Verifique a conexão.", true); return; }
   const salvo = store.get("local");
-  const uf = salvo && UF[salvo.uf] ? salvo.uf : 53;
+  // sem escolha salva, abre em Pontes e Lacerda (MT)
+  const UF_PADRAO = 51, MUN_PADRAO = 510675;
+  const uf = salvo && UF[salvo.uf] ? salvo.uf : UF_PADRAO;
   await trocarUF(uf);
-  const mun = salvo?.mun ? MUN_POR_ID.get(salvo.mun) : (uf === 53 ? MUN_POR_ID.get(530010) : null);
+  const mun = salvo?.mun ? MUN_POR_ID.get(salvo.mun) : (!salvo && uf === UF_PADRAO ? MUN_POR_ID.get(MUN_PADRAO) : null);
   if (mun && mun[2] === uf){ $("#cidade").value = mun[1]; escolherCidade(mun[1]); }
   const v = location.hash.slice(1); if (["painel", "agua", "remedios", "vacinas", "sangue", "transparencia", "arbo"].includes(v)) irPara(v);
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost") && !window.claude){ navigator.serviceWorker.register("sw.js").catch(() => {}); }
