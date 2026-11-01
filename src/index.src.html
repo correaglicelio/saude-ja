@@ -3158,7 +3158,7 @@ async function iniciar(){
   const mun = salvo?.mun ? MUN_POR_ID.get(salvo.mun) : (!salvo && uf === UF_PADRAO ? MUN_POR_ID.get(MUN_PADRAO) : null);
   if (mun && mun[2] === uf){ $("#cidade").value = mun[1]; escolherCidade(mun[1]); }
   const v = location.hash.slice(1); if (["painel", "agua", "remedios", "vacinas", "sangue", "transparencia", "arbo"].includes(v)) irPara(v);
-  if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost") && !window.claude){ navigator.serviceWorker.register("sw.js").catch(() => {}); }
+  if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost") && !window.claude){ navigator.serviceWorker.register("sw.js", {updateViaCache: "none"}).catch(() => {}); }
 }
 iniciar();
 })();
