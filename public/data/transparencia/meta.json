@@ -14,6 +14,13 @@
    "periodo": "18",
    "descricao": "4º bimestre",
    "chave": "2026-18"
+  },
+  "periodos": {
+   "12": "1º bimestre",
+   "14": "2º bimestre",
+   "1": "3º bimestre",
+   "18": "4º bimestre",
+   "20": "5º bimestre"
   }
  },
  "previne": {

@@ -1276,6 +1276,14 @@ line.ar-gl{stroke:var(--line); stroke-width:1}
 .tr-base{stroke:var(--line); stroke-width:1}
 .tr-ref{stroke:var(--bad); stroke-width:1.5; stroke-dasharray:5 4}
 .tr-reft{font-size:11.5px; font-weight:700; fill:var(--bad)}
+.tr-atraso{display:flex; gap:12px; align-items:flex-start; background:var(--bad-soft); border:2px solid var(--bad); border-radius:var(--r); padding:12px 14px; font-size:14px}
+.tr-atraso svg{width:22px; height:22px; flex:none; color:var(--bad); margin-top:1px}
+.tr-atraso b:first-child{color:var(--bad)}
+.tr-atr{box-shadow:inset 4px 0 0 var(--bad)}
+.tr-atr-lista{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap:6px}
+.tr-atr-lista button{display:grid; gap:1px; text-align:left; font:inherit; color:inherit; border:1px solid var(--line); background:var(--bg); border-radius:8px; padding:8px 10px; cursor:pointer}
+.tr-atr-lista button:hover{border-color:var(--bad)}
+.tr-atr-lista span{font-size:12.5px; color:var(--bad)}
 .tr-nota{margin:8px 0 0; font-size:12.5px; color:var(--muted)}
 .tr-ctl{display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:10px}
 .tr-ctl .escopo{margin:0}
@@ -3248,10 +3256,28 @@ const fmtR0 = v => v == null ? "—" : "R$\u00a0" + Math.round(v).toLocaleString
 const fmtMi = v => v == null ? "—" : v >= 1e9 ? "R$ " + (v / 1e9).toLocaleString("pt-BR", {maximumFractionDigits: 2}) + " bilhões" : "R$ " + (v / 1e6).toLocaleString("pt-BR", {maximumFractionDigits: v >= 1e8 ? 0 : 1}) + " milhões";
 const anoFech = () => TR.meta?.siops?.anos?.at(-1);
 const chaveAtual = () => TR.meta?.siops?.atual?.chave;
+const ORDEM_BIM = ["12", "14", "1", "18", "20"];
+const descBim = k => (TR.meta?.siops?.periodos || {})[String(k).split("-")[1]] || TR.meta?.siops?.atual?.descricao || "";
 function rotPeriodo(k){
   if (!k) return "";
   if (!k.includes("-")) return k;
-  const [a] = k.split("-"); return `${a} até o ${TR.meta.siops.atual.descricao}`;
+  const [a] = k.split("-"); return `${a} até o ${descBim(k)}`;
+}
+// último bimestre do ano em curso que o município enviou ao SIOPS (pode estar atrasado em relação ao estado)
+function atualDe(v){
+  const ano = TR.meta?.siops?.atual?.ano; if (!ano || !v) return null;
+  const ks = Object.keys(v).filter(k => k.startsWith(ano + "-")).sort((x, y) => ORDEM_BIM.indexOf(x.split("-")[1]) - ORDEM_BIM.indexOf(y.split("-")[1]));
+  return ks.at(-1) || null;
+}
+function avisoAtraso(nm, kM, kA){
+  const ano = kA.split("-")[0];
+  return `<div class="tr-atraso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg><div>
+    <b>${esc(nm)} está atrasado no SIOPS.</b> ${kM ? `O último envio foi o <b>${descBim(kM)} de ${ano}</b>; o ${descBim(kA)} já deveria estar lá.` : `Ainda não enviou nenhum bimestre de ${ano}.`}
+    Pela Lei de Responsabilidade Fiscal, o relatório de cada bimestre deve ser publicado até 30 dias depois do fim do bimestre. Sem esses dados, a população não consegue acompanhar quanto o município está aplicando em saúde.</div></div>`;
+}
+function atrasadosUF(d, kA){
+  return MUN.filter(m => m[2] === S.uf).map(m => ({m: m[0], k: atualDe(d.s[String(m[0])])})).filter(x => x.k !== kA)
+    .sort((a, b) => (a.k ? ORDEM_BIM.indexOf(a.k.split("-")[1]) : -1) - (b.k ? ORDEM_BIM.indexOf(b.k.split("-")[1]) : -1) || nomeMun(a.m).localeCompare(nomeMun(b.m), "pt-BR"));
 }
 // soma do estado (valores agregados, não média simples)
 function trEstado(d, k){
@@ -3305,13 +3331,15 @@ async function renderTransp(){
   const nomeUF = UF_NOME[UF[uf]];
   let html = "";
   if (S.mun){
-    const v = d.s[String(S.mun)] || {}, f = v[kF], a = kA ? v[kA] : null, nm = nomeMun(S.mun);
+    const v = d.s[String(S.mun)] || {}, f = v[kF], kM = atualDe(v), a = kM ? v[kM] : null, nm = nomeMun(S.mun);
+    const atrasado = !!kA && kM !== kA;
     const pos = rank.findIndex(x => x.m === String(S.mun)) + 1, posH = rankHab.findIndex(x => x.m === String(S.mun)) + 1;
+    if (atrasado) html += avisoAtraso(nm, kM, kA);
     if (!f && !a){ html = `<div class="box" style="color:var(--muted)">${esc(nm)} ainda não tem dados declarados no SIOPS para ${kF}.</div>`; }
     else {
       const lei = `${rotuloTip("A lei exige no mínimo 15%", "tr_lc141")} para os municípios`;
       if (a){
-        const p = a[0], st = p >= 15 ? "ok" : "warn", per = rotPeriodo(kA);
+        const p = a[0], st = p >= 15 ? "ok" : "warn", per = rotPeriodo(kM);
         html += `<div class="tr-hero st-${st}">
         <div class="tr-hero-n"><span class="tr-hero-k">Aplicado em saúde em ${per}</span><b>${fmtP2(p)}</b><span>da receita própria</span></div>
         <div class="tr-hero-t">${seloAsps(p, true)}
@@ -3324,25 +3352,27 @@ async function renderTransp(){
         <div class="tr-hero-n"><span class="tr-hero-k">Aplicado em saúde em ${kF}</span><b>${fmtP2(p)}</b><span>da receita própria</span></div>
         <div class="tr-hero-t">${seloAsps(p)}
           <p>Em ${kF}, ${esc(nm)} aplicou <b>${fmtMi(f[2])}</b> de recursos próprios em ações e serviços públicos de saúde, ${fmtP2(p)} da receita de impostos e transferências (${fmtMi(f[3])}). ${lei}.</p>
-          ${kA ? `<p class="tr-atual"><small>${rotPeriodo(kA)}: ${esc(nm)} ainda não enviou os dados ao SIOPS.</small></p>` : ""}
+
         </div></div>`;
       }
       // indicadores do ano em curso (quando já enviado), com o ano fechado para comparar
-      const b = a || f, kB = a ? kA : kF, perB = a ? rotPeriodo(kA) : kF, estB = a ? estA : est;
-      const rankB = a ? trRank(d, kA) : rank, rankHabB = a ? trRank(d, kA, 1) : rankHab;
+      // com atraso, não comparamos com o estado (os outros municípios já estão em outro bimestre)
+      const b = a || f, perB = a ? rotPeriodo(kM) : kF, estB = a ? (atrasado ? null : estA) : est;
+      const rankOk = a && !atrasado, perR = rankOk ? rotPeriodo(kA) : kF;
+      const rankB = rankOk ? trRank(d, kA) : rank, rankHabB = rankOk ? trRank(d, kA, 1) : rankHab;
       const posB = rankB.findIndex(x => x.m === String(S.mun)) + 1, posHB = rankHabB.findIndex(x => x.m === String(S.mun)) + 1;
       const ant = (i, fn) => a && f && f[i] != null ? ` · ${kF}: ${fn(f[i])}` : "";
       html += `<div class="kpis">
-        <div class="kpi"><div class="k">${rotuloTip("Gasto com saúde por habitante", "tr_hab")}</div><div class="v">${fmtR0(b?.[1])}</div><div class="s">${perB} · ${UF[uf]}: ${fmtR0(estB.rhab)}${ant(1, fmtR0)}${a ? " (ano inteiro)" : ""}</div></div>
-        <div class="kpi"><div class="k">Posição no estado</div><div class="v">${posB ? posB + "º" : "—"}</div><div class="s">de ${rankB.length}${a ? " que já enviaram" : ""} em % aplicado (${perB}) · ${posHB ? posHB + "º" : "—"} em R$ por habitante${a && pos ? ` · ${kF}: ${pos}º` : ""}</div></div>
+        <div class="kpi"><div class="k">${rotuloTip("Gasto com saúde por habitante", "tr_hab")}</div><div class="v">${fmtR0(b?.[1])}</div><div class="s">${perB}${estB ? ` · ${UF[uf]}: ${fmtR0(estB.rhab)}` : ""}${ant(1, fmtR0)}${a ? " (ano inteiro)" : ""}</div></div>
+        <div class="kpi"><div class="k">Posição no estado</div><div class="v">${posB ? posB + "º" : "—"}</div><div class="s">de ${rankB.length}${rankOk ? " que já enviaram" : ""} em % aplicado (${perR}) · ${posHB ? posHB + "º" : "—"} em R$ por habitante${rankOk && pos ? ` · ${kF}: ${pos}º` : ""}</div></div>
         <div class="kpi"><div class="k">${rotuloTip("Gasto com pessoal", "tr_pessoal")}</div><div class="v">${b?.[4] == null ? "—" : fmtPct(b[4])}</div><div class="s">da despesa total com saúde, ${perB}${ant(4, fmtPct)}</div></div>
         <div class="kpi"><div class="k">Medicamentos e investimentos</div><div class="v" style="font-size:24px">${b?.[5] == null ? "—" : fmtPct(b[5])} · ${b?.[6] == null ? "—" : fmtPct(b[6])}</div><div class="s">da despesa total com saúde, ${perB}${a && f && f[5] != null ? ` · ${kF}: ${fmtPct(f[5])} · ${fmtPct(f[6])}` : ""}</div></div>
       </div>`;
       const ptsP = anos.map(y => ({r: String(y), v: v[y]?.[0] ?? null})), ptsH = anos.map(y => ({r: String(y), v: v[y]?.[1] ?? null}));
-      if (a){ ptsP.push({r: kA.split("-")[0], v: a[0]}); }
+      if (a){ ptsP.push({r: kM.split("-")[0], v: a[0]}); }
       html += `<div class="grid2 tr-g">
-        <div class="box"><h3>% da receita própria aplicada em saúde <small>${anos[0]} a ${kA ? kA.split("-")[0] : kF}</small></h3>${trColunas(ptsP, {ref: 15, fmtV: x => x.toLocaleString("pt-BR", {maximumFractionDigits: 1}) + "%", parcialUlt: !!a, rotRef: "mín. 15%"})}
-          ${a ? `<p class="tr-nota">* ${rotPeriodo(kA)} (parcial). Colunas em vermelho ficaram abaixo do mínimo.</p>` : ""}</div>
+        <div class="box"><h3>% da receita própria aplicada em saúde <small>${anos[0]} a ${kM ? kM.split("-")[0] : kF}</small></h3>${trColunas(ptsP, {ref: 15, fmtV: x => x.toLocaleString("pt-BR", {maximumFractionDigits: 1}) + "%", parcialUlt: !!a, rotRef: "mín. 15%"})}
+          ${a ? `<p class="tr-nota">* ${rotPeriodo(kM)} (parcial). Colunas em vermelho ficaram abaixo do mínimo.</p>` : ""}</div>
         <div class="box"><h3>Gasto total com saúde por habitante <small>R$ por ano, todas as fontes (município, estado e União)</small></h3>${trColunas(ptsH, {fmtV: x => Math.round(x).toLocaleString("pt-BR")})}
           <p class="tr-nota">Valores nominais, sem correção pela inflação. Média de ${nomeUF} em ${kF}: ${fmtR0(est.rhab)}.</p></div>
       </div>`;
@@ -3364,6 +3394,11 @@ async function renderTransp(){
       <div class="kpi"><div class="k">${rotuloTip("Gasto por habitante", "tr_hab")}</div><div class="v">${fmtR0(est.rhab)}</div><div class="s">no conjunto dos municípios, ${kF}</div></div>
     </div>`;
     }
+  }
+  if (!S.mun && kA){
+    const atr = atrasadosUF(d, kA);
+    if (atr.length) html += `<div class="box tr-atr"><h3>Atrasados no SIOPS <small>${fmt(atr.length)} ${atr.length === 1 ? "município ainda não enviou" : "municípios ainda não enviaram"} o ${descBim(kA)} de ${kA.split("-")[0]} · toque para ver os números</small></h3>
+      <div class="tr-atr-lista">${atr.map(x => `<button type="button" data-trmun="${x.m}"><b>${esc(nomeMun(x.m))}</b><span>${x.k ? "último: " + descBim(x.k) : "nada de " + kA.split("-")[0]}</span></button>`).join("")}</div></div>`;
   }
   // ranking do estado
   const so = S.trSoAbaixo, kR = (S.trRankAtual ?? true) && kA ? kA : kF, rk = trRank(d, kR);
@@ -3422,7 +3457,7 @@ function ligarTransp(){
   body.addEventListener("click", e => {
     const per = e.target.closest("[data-trper]"); if (per){ S.trRankAtual = per.dataset.trper === "a"; renderTransp(); return; }
     if (e.target.closest("[data-trtudo]")){ S.trTudo = true; renderTransp(); return; }
-    const tm = e.target.closest("tr[data-trmun]");
+    const tm = e.target.closest("[data-trmun]");
     if (tm){ const mm = MUN_POR_ID.get(+tm.dataset.trmun); if (mm){ $("#cidade").value = mm[1]; escolherCidade(mm[1]); $("#transparencia").scrollTop = 0; } }
   });
 }
@@ -3430,15 +3465,17 @@ function resumoTransp(d){
   if (!d) return rsSem(`Sem dados de gastos de ${UF_NOME[UF[S.uf]]} por enquanto${TR.meta?.ufs?.length ? ` (disponível: ${TR.meta.ufs.map(u => UF[u]).join(", ")})` : ""}.`);
   const kF = String(anoFech()), kA = chaveAtual();
   if (S.mun){
-    const v = d.s[String(S.mun)] || {}, f = v[kF], a = kA ? v[kA] : null;
-    if (!f && !a) return rsSem(`Sem dados no SIOPS para ${kF}.`);
-    if (a) return `<div class="rs-big${a[0] < 15 ? " atencao" : ""}">${fmtP2(a[0])}<small>da receita própria aplicada em saúde em ${rotPeriodo(kA)}</small></div>
-      ${a[0] >= 15 ? pill("ok", "Acima de 15% até agora") : pill("warn", "Abaixo de 15% até agora")}
+    const v = d.s[String(S.mun)] || {}, f = v[kF], kM = atualDe(v), a = kM ? v[kM] : null, atrasado = !!kA && kM !== kA;
+    const atr = atrasado ? pill("bad", kM ? `Atrasado: falta o ${descBim(kA)}` : `Nada de ${kA.split("-")[0]} no SIOPS`) : "";
+    if (!f && !a) return `${atr}${rsSem(`Sem dados no SIOPS para ${kF}.`)}`;
+    if (a) return `<div class="rs-big${a[0] < 15 ? " atencao" : ""}">${fmtP2(a[0])}<small>da receita própria aplicada em saúde em ${rotPeriodo(kM)}</small></div>
+      ${atr || (a[0] >= 15 ? pill("ok", "Acima de 15% até agora") : pill("warn", "Abaixo de 15% até agora"))}
       <ul class="rs-lista">${f ? `<li><b>${fmtP2(f[0])}</b> em ${kF} (ano fechado) ${f[0] >= 15 ? pill("ok", "cumpriu") : pill("bad", "abaixo do mínimo")}</li>` : ""}${f ? `<li><b>${fmtR0(f[1])}</b> por habitante em ${kF}</li>` : ""}</ul>
       <p class="rs-nota">O mínimo de 15% é conferido no ano fechado.</p>`;
     return `<div class="rs-big${f[0] < 15 ? " alerta" : ""}">${fmtP2(f[0])}<small>da receita própria aplicada em saúde em ${kF}</small></div>
       ${f[0] >= 15 ? pill("ok", "Cumpriu o mínimo de 15%") : pill("bad", "Abaixo do mínimo de 15%")}
-      <ul class="rs-lista"><li><b>${fmtR0(f[1])}</b> por habitante (total)</li><li>${rotPeriodo(kA) || "Ano em curso"}: ainda não enviado ao SIOPS</li></ul>`;
+      ${atr}
+      <ul class="rs-lista"><li><b>${fmtR0(f[1])}</b> por habitante (total)</li>${kA ? `<li>${kA.split("-")[0]}: nenhum bimestre enviado ao SIOPS</li>` : ""}</ul>`;
   }
   const est = trEstado(d, kF), baixo = trRank(d, kF).filter(x => x.v[0] < 15);
   const estA = kA ? trEstado(d, kA) : null;
@@ -3446,7 +3483,8 @@ function resumoTransp(d){
     const baixoA = trRank(d, kA).filter(x => x.v[0] < 15).reverse();
     return `<div class="rs-big${baixoA.length ? " atencao" : ""}">${fmt(estA.ok)} de ${fmt(estA.n)}<small>municípios acima de 15% em ${rotPeriodo(kA)}</small></div>
     ${baixoA.length ? `<ul class="rs-rank">${baixoA.slice(0, 3).map(x => `<li><span>${esc(nomeMun(+x.m))}</span><b class="warn">${fmtP2(x.v[0])}</b></li>`).join("")}</ul>` : pill("ok", "Todos acima de 15% até agora")}
-    <p class="rs-txt">${kF} (ano fechado): <b>${fmt(est.ok)} de ${fmt(est.n)}</b> cumpriram${baixo.length ? ` ${pill("bad", `${baixo.length} abaixo`)}` : ""}</p>`;
+    <p class="rs-txt">${kF} (ano fechado): <b>${fmt(est.ok)} de ${fmt(est.n)}</b> cumpriram${baixo.length ? ` ${pill("bad", `${baixo.length} abaixo`)}` : ""}</p>
+    ${(() => { const n = atrasadosUF(d, kA).length; return n ? `<p class="rs-txt">${pill("bad", `${n} atrasados no SIOPS`)}</p>` : ""; })()}`;
   }
   return `<div class="rs-big${baixo.length ? " alerta" : ""}">${fmt(est.ok)} de ${fmt(est.n)}<small>municípios cumpriram os 15% em ${kF}</small></div>
     ${baixo.length ? `<ul class="rs-rank">${baixo.slice(0, 3).map(x => `<li><span>${esc(nomeMun(+x.m))}</span><b class="bad">${fmtP2(x.v[0])}</b></li>`).join("")}</ul>` : pill("ok", "Todos acima do mínimo")}
@@ -3455,7 +3493,13 @@ function resumoTransp(d){
 function nivelTransp(d){
   if (!d) return "";
   const kF = String(anoFech()), kA = chaveAtual();
-  if (S.mun){ const v = d.s[String(S.mun)] || {}; if (v[kF] && v[kF][0] < 15) return "rs-alerta"; if (kA && v[kA] && v[kA][0] < 15) return "rs-atencao"; return ""; }
+  if (S.mun){
+    const v = d.s[String(S.mun)] || {}, kM = atualDe(v);
+    if (kA && kM !== kA) return "rs-alerta";          // não enviou o último bimestre ao SIOPS
+    if (v[kF] && v[kF][0] < 15) return "rs-alerta";
+    if (kM && v[kM][0] < 15) return "rs-atencao";
+    return "";
+  }
   return trRank(d, kF).some(x => x.v[0] < 15) ? "rs-alerta" : "";
 }
 

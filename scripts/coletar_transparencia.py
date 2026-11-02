@@ -42,7 +42,7 @@ SIOPS = "https://siops-consulta-publica-api.saude.gov.br/v1"
 PREVINE = "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/sisab/indicador_desempenho/csv/sisab_indicador_desempenho_{q}.csv.zip"
 QUADRIMESTRES = ["2024Q1", "2024Q2", "2024Q3"]   # únicos publicados em CSV aberto
 ANO_INICIAL = 2020
-PERIODOS = {"12": "1º bimestre", "14": "2º bimestre", "1": "3º bimestre (1º semestre)", "18": "4º bimestre",
+PERIODOS = {"12": "1º bimestre", "14": "2º bimestre", "1": "3º bimestre", "18": "4º bimestre",
             "20": "5º bimestre", "2": "ano fechado"}
 ORDEM_PER = ["12", "14", "1", "18", "20", "2"]
 
@@ -141,16 +141,35 @@ def coletar_siops(muns_por_uf: dict[int, list[int]]) -> tuple[dict, dict]:
                     d[k] = v
                 else:
                     d.pop(k, None)
-        # descarta períodos parciais antigos (ficam só os anos fechados e o período atual)
-        validas = {chave(a, p) for a, p in alvo}
+        # quem ainda não enviou o bimestre mais recente: busca o último bimestre do ano que ele enviou
+        if per_atual != "2":
+            anteriores = [p for p in reversed(ORDEM_PER[:ORDEM_PER.index(per_atual)])]
+            faltam = [m for m in muns if chave(ano_max, per_atual) not in cache.get(str(m), {})]
+
+            def ultimo(m):
+                for p in anteriores:
+                    v = indicadores(get_json(f"{SIOPS}/indicador/municipal/{m}/{ano_max}/{p}"))
+                    if v:
+                        return m, chave(ano_max, p), v
+                return m, None, None
+
+            with ThreadPoolExecutor(16) as ex:
+                for m, k, v in ex.map(ultimo, faltam):
+                    if k:
+                        cache.setdefault(str(m), {})[k] = v
+        # fica: anos fechados + só o bimestre mais recente que cada município enviou no ano atual
+        fechadas = {str(a) for a in fechados}
         for m in cache:
-            cache[m] = {k: v for k, v in cache[m].items() if k in validas}
+            parc = sorted((k for k in cache[m] if k.startswith(f"{ano_max}-")),
+                          key=lambda k: ORDEM_PER.index(k.split("-")[1]))
+            cache[m] = {k: v for k, v in cache[m].items() if k in fechadas or (parc and k == parc[-1])}
         arq.write_text(json.dumps(cache, ensure_ascii=False, separators=(",", ":")), "utf-8")
         resultado[uf] = cache
         print(f"\r   SIOPS: UF {uf} ok ({len(tarefas)} consultas)        ", end="", flush=True)
     print()
     meta = {"anos": fechados, "atual": {"ano": ano_max, "periodo": per_atual, "descricao": PERIODOS[per_atual],
-                                         "chave": chave(ano_max, per_atual)}}
+                                         "chave": chave(ano_max, per_atual)},
+            "periodos": {p: d for p, d in PERIODOS.items() if p != "2"}}
     return resultado, meta
 
 
