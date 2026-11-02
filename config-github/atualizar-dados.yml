@@ -15,14 +15,13 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: saude-ja
-  cancel-in-progress: false
-
 jobs:
   coletar:
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
+    concurrency:            # uma coleta por vez; não trava a publicação de mudanças do site
+      group: coleta
+      cancel-in-progress: false
     timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
@@ -106,6 +105,9 @@ jobs:
     needs: [coletar]
     if: always() && (needs.coletar.result == 'success' || needs.coletar.result == 'skipped')
     runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
