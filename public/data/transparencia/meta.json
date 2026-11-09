@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-02T19:55:44+00:00",
+ "gerado_em": "2026-11-09T20:16:48+00:00",
  "siops": {
   "anos": [
    2020,
@@ -11,9 +11,9 @@
   ],
   "atual": {
    "ano": 2026,
-   "periodo": "18",
-   "descricao": "4º bimestre",
-   "chave": "2026-18"
+   "periodo": "20",
+   "descricao": "5º bimestre",
+   "chave": "2026-20"
   },
   "periodos": {
    "12": "1º bimestre",
