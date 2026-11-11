@@ -864,6 +864,7 @@ td.n{font-family:var(--f-data); text-align:right; font-variant-numeric:tabular-n
 tr.click{cursor:pointer}
 tr.click:hover td{background:var(--sunk)}
 .src{font-size:12.5px; color:var(--muted)}
+.top .rodape{display:none}
 .autoria{margin:14px 16px 24px; text-align:center; font-size:12px; color:var(--muted)}
 .autoria a{color:var(--accent); text-decoration:none; overflow-wrap:anywhere}
 .autoria a:hover{text-decoration:underline}
@@ -1114,6 +1115,8 @@ table th{font-weight:600}
   .app{grid-template-columns:232px minmax(0,1fr); grid-template-rows:auto minmax(0,1fr)}
   .top{grid-column:1; grid-row:1 / span 2; flex-direction:column; align-items:stretch; flex-wrap:nowrap; gap:22px; border-bottom:0; border-right:1px solid var(--line); padding:22px 14px; overflow:auto}
   .brand{margin-right:0; padding:0 8px}
+  .top .rodape{display:block; margin:auto 0 0; text-align:center; font-size:12px; line-height:1.5; color:var(--muted); padding:0 8px}
+  .top .rodape a{color:var(--accent)}
   .views{flex-direction:column; background:transparent; padding:0; gap:2px; border-radius:0}
   .views button{display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:10px; text-align:left; font-weight:500; font-size:15px; color:var(--ink); --c1:var(--accent)}
   .views button:hover{background:var(--sel)}
@@ -1387,6 +1390,7 @@ body.ficha-aberta{overflow:hidden}
       <button type="button" data-view="transparencia" aria-pressed="false" data-tema="transp"><svg class="dico" aria-hidden="true"><use href="#d-transp"/></svg><span>Transparência</span></button>
       <button type="button" data-view="painel" aria-pressed="false"><svg class="dico" aria-hidden="true"><use href="#d-painel"/></svg><span>Painel</span></button>
     </nav>
+    <p class="rodape">Dados abertos do Ministério da Saúde e outras fontes oficiais.<br>Criado por <b>Glicélio Corrêa</b><br><a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 · Licença MIT</p>
   </header>
 
   <section class="where" aria-label="Escolher local">

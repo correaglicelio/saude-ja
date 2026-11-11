@@ -1,7 +1,7 @@
 // Saúde Já — service worker: faz o app abrir sem internet com os últimos dados vistos.
 // Estratégia: app e listas fixas em cache na instalação; dados por estado ficam em cache
 // quando abertos (rede primeiro, cache se estiver offline); mapa de ruas guardado aos poucos.
-const VERSAO = "saudeja-v10";
+const VERSAO = "saudeja-v11";
 const BASE = ["./", "index.html", "manifest.webmanifest", "icon.svg", "icon-maskable.svg", "icon-192.png", "icon-512.png", "apple-touch-icon.png",
   "data/municipios.json", "data/estados.geojson", "data/meta.json", "data/vacinas/calendario.json", "data/sangue.json", "data/transparencia/meta.json", "data/arboviroses/meta.json", "data/srag/meta.json",
   "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"];
