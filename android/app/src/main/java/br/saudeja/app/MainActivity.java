@@ -38,8 +38,9 @@ import java.io.OutputStream;
  */
 public class MainActivity extends Activity {
 
-    static final String SITE = "https://correaglicelio.github.io/saude-ja/";
-    static final String HOST = "correaglicelio.github.io";
+    static final String SITE = "https://hubja.com.br/saude-ja/";
+    static final String HOST = "hubja.com.br";
+    static final String HOST_ANTIGO = "correaglicelio.github.io"; // endereço antigo (redireciona para o novo)
     static final String CAMINHO = "/saude-ja";
     static final int PEDIDO_LOCAL = 1;
 
@@ -118,7 +119,7 @@ public class MainActivity extends Activity {
         String esquema = u.getScheme();
         if ("about".equals(esquema) || "data".equals(esquema) || "blob".equals(esquema)) return true;
         String caminho = u.getPath() == null ? "" : u.getPath();
-        return "https".equals(esquema) && HOST.equalsIgnoreCase(u.getHost()) && caminho.startsWith(CAMINHO);
+        return "https".equals(esquema) && (HOST.equalsIgnoreCase(u.getHost()) || HOST_ANTIGO.equalsIgnoreCase(u.getHost())) && caminho.startsWith(CAMINHO);
     }
 
     /** Telefone, WhatsApp, mapas e sites de fora abrem no app certo do celular. */

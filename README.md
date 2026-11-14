@@ -1,6 +1,6 @@
 # Saúde Já
 
-**Acesse:** https://correaglicelio.github.io/saude-ja/ (dados atualizados automaticamente toda segunda-feira)
+**Acesse:** https://hubja.com.br/saude-ja/ (dados atualizados automaticamente toda segunda-feira)
 
 App (site instalável no Android e no PC) para encontrar unidades de saúde do SUS:
 UBS, postos, UPAs, prontos-socorros, hospitais, policlínicas, CAPS e salas de vacina,
