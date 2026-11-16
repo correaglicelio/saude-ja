@@ -956,6 +956,13 @@ const store = {
   get(k){ try { return JSON.parse(localStorage.getItem("saudeja:" + k)); } catch { return null; } },
   set(k, v){ try { localStorage.setItem("saudeja:" + k, JSON.stringify(v)); } catch {} },
 };
+
+/* Cidade única do Hub Já: os 4 apps ficam no mesmo endereço (hubja.com.br) e compartilham esta escolha neste aparelho. */
+const hubCidade = {
+  pronto: false,   // só grava depois da abertura do app, para o ajuste automático de início não trocar a cidade escolhida
+  ler(){ try { const v = JSON.parse(localStorage.getItem("hubja:cidade")); return v && /^\d{6}$/.test(v.m6) ? v.m6 : null; } catch { return null; } },
+  gravar(mun){ try { if (mun && this.pronto) localStorage.setItem("hubja:cidade", JSON.stringify({m6: String(mun).slice(0, 6), em: Date.now()})); } catch {} },
+};
 const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const corGrupo = id => cssVar("--g-" + id);
 const fmt = n => n.toLocaleString("pt-BR");
@@ -3124,7 +3131,7 @@ function escolherCidade(nome){
   aplicar(true); salvarLocal(); nota("");
   return true;
 }
-function salvarLocal(){ store.set("local", {uf: S.uf, mun: S.mun}); }
+function salvarLocal(){ store.set("local", {uf: S.uf, mun: S.mun}); hubCidade.gravar(S.mun); }
 
 function pertoDeMim(){
   const b = $("#gps");
@@ -3384,7 +3391,7 @@ async function iniciar(){
     if (pop){ POP = pop.por_municipio || {}; POP_ANO = pop.ano; }
     if (window.L) iniciarMapa(estados); else nota("O mapa não carregou. A lista funciona normalmente.", true);
   } catch { nota("Não foi possível carregar a lista de municípios. Verifique a conexão.", true); return; }
-  const salvo = store.get("local");
+  const m6 = hubCidade.ler(); const salvo = m6 && UF[Math.floor(m6 / 10000)] && MUN_POR_ID.has(+m6) ? {uf: Math.floor(m6 / 10000), mun: +m6} : store.get("local");
   // sem escolha salva, abre em Pontes e Lacerda (MT)
   const UF_PADRAO = 51, MUN_PADRAO = 510675;
   const uf = salvo && UF[salvo.uf] ? salvo.uf : UF_PADRAO;
@@ -3394,6 +3401,6 @@ async function iniciar(){
   const v = location.hash.slice(1); if (["painel", "agua", "remedios", "vacinas", "sangue", "transparencia", "arbo"].includes(v)) irPara(v);
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost") && !window.claude){ navigator.serviceWorker.register("sw.js", {updateViaCache: "none"}).catch(() => {}); }
 }
-iniciar();
+iniciar().finally(() => { hubCidade.pronto = true; });
 })();
 </script>
