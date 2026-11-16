@@ -265,6 +265,17 @@ def main() -> int:
             ano_pop, pop = None, {}
             print(f"  IBGE indisponível ({ex}); seguindo sem população (as taxas por habitante ficam vazias).")
 
+    # Trava de segurança: se a fonte devolver muito menos unidades que a coleta anterior, NÃO grava por cima.
+    if not so_complementos:
+        n_novo = sum(len({l[0] for l in v}) for v in por_uf.values())
+        try:
+            n_antigo = json.loads((SAIDA / "meta.json").read_text("utf-8")).get("total") or 0
+        except Exception:  # noqa: BLE001
+            n_antigo = 0
+        if n_antigo and n_novo < 0.85 * n_antigo:
+            print(f"ERRO: a fonte devolveu só {n_novo} unidades (antes: {n_antigo}). Mantendo os dados anteriores.")
+            return 1
+
     total = 0
     tot_leitos = [0] * len(LEITOS_CAMPOS)
     for uf, linhas in por_uf.items():
