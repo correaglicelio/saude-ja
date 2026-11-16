@@ -998,11 +998,12 @@ let map, camadaPontos, camadaOrigem, camadaEstados, renderer;
 function iniciarMapa(estados){
   map = L.map("map", {preferCanvas: true, zoomControl: true, attributionControl: true, minZoom: 3}).setView([-14.5, -52], 4);
   // Se o tamanho da área do mapa mudar (menu lateral, janela, troca de aba), o mapa se reajusta e não deixa quadrados em branco.
-  if ("ResizeObserver" in window){ let tr; new ResizeObserver(() => { clearTimeout(tr); tr = setTimeout(() => map.invalidateSize(), 60); }).observe($("#map")); }
+  if ("ResizeObserver" in window){ let tr; new ResizeObserver(() => { clearTimeout(tr); tr = setTimeout(() => { map.invalidateSize(); if (!map._manual) enquadrarMapa(); }, 60); }).observe($("#map")); }
   renderer = L.canvas({padding: 0.4});
   camadaEstados = L.geoJSON(estados, {style: () => ({color: cssVar("--map-edge"), weight: 1, fillColor: cssVar("--map-land"), fillOpacity: 1}), interactive: false}).addTo(map);
   camadaPontos = L.layerGroup().addTo(map);
   camadaOrigem = L.layerGroup().addTo(map);
+  for (const ev of ["mousedown", "touchstart", "wheel"]) $("#map").addEventListener(ev, () => { map._manual = true; }, {passive: true});
   map.attributionControl.setPrefix(false).addAttribution('Dados: <a href="https://dadosabertos.saude.gov.br/" target="_blank" rel="noopener">CNES / Ministério da Saúde</a>');
   // Mapa de ruas do OpenStreetMap quando o ambiente permite carregar imagens externas
   // (no site publicado sim; na prévia dentro do Claude, não). Sem ele, fica o contorno dos estados.
@@ -1036,12 +1037,13 @@ function desenharMapa(enquadrar){
 }
 function enquadrarMapa(){
   if (!map) return;
+  map.invalidateSize(false);   // o tamanho do mapa pode ainda não estar medido no primeiro desenho
   if (S.origem && S.filtradas.length){
     const perto = S.filtradas.slice(0, Math.min(12, S.filtradas.length)).map(r => [r[C.lat], r[C.lng]]);
     perto.push(S.origem);
-    map.fitBounds(L.latLngBounds(perto).pad(0.15), {maxZoom: 15});
+    map.fitBounds(L.latLngBounds(perto).pad(0.15), {maxZoom: 15, animate: false});
   } else if (S.filtradas.length){
-    map.fitBounds(L.latLngBounds(S.filtradas.map(r => [r[C.lat], r[C.lng]])).pad(0.05), {maxZoom: 14});
+    map.fitBounds(L.latLngBounds(S.filtradas.map(r => [r[C.lat], r[C.lng]])).pad(0.05), {maxZoom: 14, animate: false});
   }
 }
 function popup(r){
@@ -1059,6 +1061,7 @@ const porMil = (n, pop) => pop ? (n / pop * 1000) : null;
 const fmtTaxa = (v, casas = 2) => v == null ? "—" : v.toLocaleString("pt-BR", {minimumFractionDigits: casas, maximumFractionDigits: casas});
 
 function aplicar(enquadrar){
+  if (enquadrar && map){ map._manual = false; clearTimeout(aplicar._t); aplicar._t = setTimeout(() => { if (!map._manual) enquadrarMapa(); }, 400); }
   const q = semAcento(S.q.trim());
   let rows = S.rows;
   if (S.mun && !S.origemTipo?.startsWith("gps")) rows = rows.filter(r => r[C.mun] === S.mun);
