@@ -1,5 +1,5 @@
 {
- "atualizado_em": "2026-11-09T20:08:42+00:00",
+ "atualizado_em": "2026-11-16T19:38:19+00:00",
  "fonte": "https://apidadosabertos.saude.gov.br/cnes/estabelecimentos",
  "campos": [
   "cnes",
@@ -32,15 +32,15 @@
  "leitos_competencia": "202609",
  "populacao_ano": "2026",
  "brasil": {
-  "unidades": 78709,
+  "unidades": 7499,
   "populacao": 214211951,
-  "leitos_existentes": 523667,
-  "leitos_sus": 354806,
-  "uti_total_exist": 64010,
-  "uti_total_sus": 32103,
-  "uti_adulto_exist": 44097,
-  "uti_pediatrico_exist": 7719,
-  "uti_neonatal_exist": 9880
+  "leitos_existentes": 104610,
+  "leitos_sus": 79016,
+  "uti_total_exist": 12184,
+  "uti_total_sus": 7523,
+  "uti_adulto_exist": 7765,
+  "uti_pediatrico_exist": 1864,
+  "uti_neonatal_exist": 2119
  },
  "tipos": {
   "1": "Posto de saúde",
@@ -57,5 +57,5 @@
   "73": "Pronto atendimento (UPA)",
   "85": "Centro de imunização"
  },
- "total": 78709
+ "total": 7499
 }

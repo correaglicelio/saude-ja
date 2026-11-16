@@ -8,7 +8,8 @@
   "2026-06",
   "2026-07",
   "2026-08",
-  "2026-09"
+  "2026-09",
+  "2026-11"
  ],
  "nomes": {
   "INF3": "vacina influenza trivalente (fragmentada, inativada)",
@@ -134,9 +135,10 @@
   "2026-05": 21657900,
   "2026-07": 14997721,
   "2026-06": 17765669,
-  "2026-08": 17107798
+  "2026-08": 17107798,
+  "2026-11": 5084936
  },
  "pop_ano": 2025,
- "gerado_em": "2026-11-09T20:16:55+00:00",
+ "gerado_em": "2026-11-16T19:42:46+00:00",
  "fonte": "SI-PNI, Doses aplicadas pelo Programa Nacional de Imunizações (dadosabertos.saude.gov.br)"
 }
