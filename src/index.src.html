@@ -177,6 +177,14 @@ button{cursor:pointer}
 .box{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:16px; min-width:0}
 .box h3{margin:0 0 12px; font-size:15px}
 .box h3 small{font-weight:400; color:var(--muted)}
+.avl{list-style:none; margin:0; padding:0; display:grid; gap:2px}
+.avl li{display:grid; grid-template-columns:auto 1fr; gap:2px 10px; padding:8px 0; border-top:1px solid var(--line); align-items:baseline}
+.avl li:first-child{border-top:0}
+.avl .ad{font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap}
+.avl a{color:var(--text); text-decoration:none; font-weight:500; line-height:1.35}
+.avl a:hover{text-decoration:underline}
+.avl .av-r{grid-column:2; justify-self:start; font-size:11px; font-weight:600; color:var(--bad); border:1px solid var(--bad); border-radius:99px; padding:0 7px}
+.avf{margin:10px 0 0; font-size:12px; color:var(--muted)}
 .bars{display:grid; gap:9px}
 .bar{display:grid; grid-template-columns:minmax(120px, 190px) 1fr 64px; gap:10px; align-items:center; font-size:13.5px}
 .bar .track{height:14px; background:var(--sunk); border-radius:4px; overflow:hidden}
@@ -765,6 +773,11 @@ body.ficha-aberta{overflow:hidden}
             <button class="btn" id="x-pdf" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2h9l5 5v15H6z M14 2v6h6"/></svg>Relatório PDF</button>
           </div>
         </div>
+        <div class="box" id="box-anvisa" hidden>
+          <h3>Avisos da Anvisa <small id="av-data"></small></h3>
+          <ul class="avl" id="av-lista"></ul>
+          <p class="avf"><a href="https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa" target="_blank" rel="noopener">Ver todos no site da Anvisa ↗</a> · Fonte: Anvisa. Mostramos só título, data e link; o texto completo está no site da Anvisa.</p>
+        </div>
         <h2 class="rs-sec" id="rs-tit">Resumo por área</h2>
         <div class="rs-grid" id="p-resumo"></div>
         <p class="rs-leg"><span><i style="--c:var(--bad)"></i>Borda vermelha: alerta</span><span><i style="--c:var(--warn)"></i>Borda amarela: atenção</span></p>
@@ -1162,7 +1175,19 @@ function escopoPainel(){
   if (S.mun) rows = rows.filter(r => r[C.mun] === S.mun);
   return rows.filter(r => S.grupos.has(GRUPO_DE[r[C.tipo]]) && (!S.sus || r[C.sus]) && (!S.h24 || r[C.turno] === "06") && (!S.uti || (LT(r) && LT(r)[2] > 0)));
 }
+let ANVISA;
+async function renderAnvisa(){
+  const box = $("#box-anvisa");
+  if (ANVISA === undefined) ANVISA = await getJSON("data/anvisa/avisos.json").catch(() => null);
+  if (!ANVISA || !ANVISA.itens || !ANVISA.itens.length){ box.hidden = true; return; }
+  const pt = d => d.split("-").reverse().join("/");
+  const dias = Math.floor((Date.now() - new Date(ANVISA.itens[0].d + "T12:00:00")) / 864e5);
+  $("#av-data").textContent = "atualizado em " + pt(ANVISA.coletado_em.slice(0, 10)) + (dias > 10 ? " · últimas notícias há " + dias + " dias" : "");
+  $("#av-lista").innerHTML = ANVISA.itens.slice(0, 5).map(i => `<li><span class="ad">${pt(i.d).slice(0, 5)}</span><a href="${esc(i.u)}" target="_blank" rel="noopener">${esc(i.t)}</a>${i.r ? '<span class="av-r">recolhimento / proibição</span>' : ""}</li>`).join("");
+  box.hidden = false;
+}
 function renderPainel(){
+  renderAnvisa();
   renderResumo();
   const rows = escopoPainel(), n = rows.length;
   const nomeLugar = S.mun ? `${nomeMun(S.mun)} (${UF[S.uf]})` : UF_NOME[UF[S.uf]];

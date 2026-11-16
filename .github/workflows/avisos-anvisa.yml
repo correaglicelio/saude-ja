@@ -1,0 +1,54 @@
+# Avisos da Anvisa: atualiza todo dia útil as notícias mostradas no Painel e republica o site.
+name: Avisos da Anvisa
+
+on:
+  schedule:
+    - cron: "43 11 * * 1-5"   # dias úteis, 08:43 em Brasília
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: coleta
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/coletar_anvisa.py
+      - name: Salvar
+        run: |
+          git config user.name "saude-ja-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/anvisa
+          if git diff --cached --quiet; then echo "Nada mudou."; exit 0; fi
+          git commit -m "Avisos da Anvisa ($(date -u +%d/%m/%Y))"
+          git pull --rebase --strategy-option=theirs origin main || true
+          git push
+
+  publicar:
+    needs: [coletar]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - id: deploy
+        uses: actions/deploy-pages@v4
