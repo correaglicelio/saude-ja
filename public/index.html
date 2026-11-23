@@ -858,6 +858,8 @@ button{cursor:pointer}
 .avl .ad{font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap}
 .avl a{color:var(--text); text-decoration:none; font-weight:500; line-height:1.35}
 .avl a:hover{text-decoration:underline}
+.avl .av-f{grid-column:2; justify-self:start; font-size:11px; color:var(--muted); display:inline-flex; align-items:center; gap:4px}
+.avl .av-f img{border-radius:2px; background:#fff}
 .avl .av-r{grid-column:2; justify-self:start; font-size:11px; font-weight:600; color:var(--bad); border:1px solid var(--bad); border-radius:99px; padding:0 7px}
 .avf a{color:var(--accent); font-weight:600}
 .avf{margin:12px 0 0; font-size:12px; color:var(--muted); text-align:center}
@@ -1406,7 +1408,7 @@ body.ficha-aberta{overflow:hidden}
       <button type="button" data-view="transparencia" aria-pressed="false" data-tema="transp"><svg class="dico" aria-hidden="true"><use href="#d-transp"/></svg><span>Transparência</span></button>
       <button type="button" data-view="painel" aria-pressed="false"><svg class="dico" aria-hidden="true"><use href="#d-painel"/></svg><span>Painel</span></button>
     </nav>
-    <p class="rodape">Dados abertos do Ministério da Saúde e outras fontes oficiais.<br>Criado por <b>Glicélio Corrêa</b><br><a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 · Licença MIT<br><small>versão v18</small></p>
+    <p class="rodape">Dados abertos do Ministério da Saúde e outras fontes oficiais.<br>Criado por <b>Glicélio Corrêa</b><br><a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 · Licença MIT<br><small>versão v19</small></p>
   </header>
 
   <section class="where" aria-label="Escolher local">
@@ -1454,9 +1456,9 @@ body.ficha-aberta{overflow:hidden}
         <div class="rs-grid" id="p-resumo"></div>
         <p class="rs-leg"><span><i style="--c:var(--bad)"></i>Borda vermelha: alerta</span><span><i style="--c:var(--warn)"></i>Borda amarela: atenção</span></p>
         <div class="box" id="box-anvisa" hidden>
-          <div class="av-cab"><a class="av-logo" href="https://www.gov.br/anvisa/pt-br" target="_blank" rel="noopener" aria-label="Site da Anvisa"><img src="anvisa-logo.png" alt="Logotipo da Anvisa" width="72" height="60" loading="lazy"></a><h3>Avisos da Anvisa</h3><p id="av-data"></p></div>
+          <div class="av-cab"><h3>Notícias da saúde</h3><p id="av-data"></p></div>
           <ul class="avl" id="av-lista"></ul>
-          <p class="avf"><a href="https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa" target="_blank" rel="noopener">Ver todos no site da Anvisa ↗</a> · Fonte: Anvisa. Mostramos só título, data e link; o texto completo está no site da Anvisa.</p>
+          <p class="avf">Fontes: <a href="https://agenciabrasil.ebc.com.br/saude" target="_blank" rel="noopener">Agência Brasil</a>, <a href="https://agencia.fiocruz.br" target="_blank" rel="noopener">Fiocruz</a> e <a href="https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa" target="_blank" rel="noopener">Anvisa</a>. Mostramos só título, data e link; o texto completo está no site de cada fonte. As notícias da Anvisa dependem do portal gov.br e podem aparecer com atraso.</p>
         </div>
         <h2 class="rs-sec">Unidades de saúde em detalhe</h2>
         <div class="kpis" id="kpis"></div>
@@ -1477,7 +1479,7 @@ body.ficha-aberta{overflow:hidden}
         </div>
         <div class="box" id="box-mun"><h3 id="t-mun">Municípios com mais unidades</h3><div class="tablewrap"><table id="tb-mun"></table></div></div>
         <p class="src" id="src"></p>
-        <p class="autoria">Criado por <b>Glicélio Corrêa</b> · <a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 Glicélio Corrêa · versão v18 · Código sob licença MIT</p>
+        <p class="autoria">Criado por <b>Glicélio Corrêa</b> · <a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 Glicélio Corrêa · versão v19 · Código sob licença MIT</p>
       </div>
     </div>
 
@@ -1869,8 +1871,8 @@ async function renderAnvisa(){
   if (!ANVISA || !ANVISA.itens || !ANVISA.itens.length){ box.hidden = true; return; }
   const pt = d => d.split("-").reverse().join("/");
   const dias = Math.floor((Date.now() - new Date(ANVISA.itens[0].d + "T12:00:00")) / 864e5);
-  $("#av-data").textContent = "atualizado em " + pt(ANVISA.coletado_em.slice(0, 10)) + (dias > 10 ? " · últimas notícias há " + dias + " dias" : "");
-  $("#av-lista").innerHTML = ANVISA.itens.slice(0, 5).map(i => `<li><span class="ad">${pt(i.d).slice(0, 5)}</span><a href="${esc(i.u)}" target="_blank" rel="noopener">${esc(i.t)}</a>${i.r ? '<span class="av-r">recolhimento / proibição</span>' : ""}</li>`).join("");
+  $("#av-data").textContent = "atualizado em " + pt(ANVISA.coletado_em.slice(0, 10)) + (dias > 10 ? " · última notícia há " + dias + " dias" : "");
+  $("#av-lista").innerHTML = ANVISA.itens.slice(0, 6).map(i => `<li><span class="ad">${pt(i.d).slice(0, 5)}</span><a href="${esc(i.u)}" target="_blank" rel="noopener">${esc(i.t)}</a><span class="av-f">${i.f === "Anvisa" ? '<img src="anvisa-logo.png" alt="" width="14" height="12">' : ""}${esc(i.f || "Anvisa")}</span>${i.r ? '<span class="av-r">recolhimento / alerta</span>' : ""}</li>`).join("");
   box.hidden = false;
 }
 function renderPainel(){

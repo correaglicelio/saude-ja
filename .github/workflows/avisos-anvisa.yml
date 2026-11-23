@@ -1,9 +1,9 @@
-# Avisos da Anvisa: atualiza todo dia útil as notícias mostradas no Painel e republica o site.
+# Notícias da saúde (Agência Brasil, Fiocruz, Anvisa): atualiza todo dia e republica o site.
 name: Avisos da Anvisa
 
 on:
   schedule:
-    - cron: "43 11 * * 1-5"   # dias úteis, 08:43 em Brasília
+    - cron: "43 11 * * *"   # todos os dias, 07:43 em Brasília
   workflow_dispatch:
 
 permissions:
