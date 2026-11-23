@@ -1,5 +1,5 @@
 {
- "atualizado_em": "2026-11-16T19:40:33+00:00",
+ "atualizado_em": "2026-11-23T15:28:38+00:00",
  "fp": {
   "meses": [
    "201612",
@@ -147,7 +147,7 @@
   "fonte": "https://dadosabertos.saude.gov.br/dataset/mgdi-programa-farmacia-popular-do-brasil"
  },
  "precos": {
-  "periodo": "26/10/2025 a 26/10/2026",
+  "periodo": "11/11/2025 a 11/11/2026",
   "fonte": "https://dadosabertos.saude.gov.br/dataset/bps",
   "campos_item": [
    "catmat",
