@@ -1,0 +1,20 @@
+name: Sondar Anvisa (teste)
+on: workflow_dispatch
+jobs:
+  s:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          python3 - <<'P'
+          import urllib.request, re
+          B={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0 Safari/537.36"}
+          urls=["https://agenciabrasil.ebc.com.br/rss/saude/feed.xml","https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml","https://agenciabrasil.ebc.com.br/tags/anvisa/feed.xml","https://agenciagov.ebc.com.br/feed","https://agencia.fiocruz.br/rss.xml","https://agencia.fiocruz.br/feed","https://dados.anvisa.gov.br/","https://www.gov.br/saude/pt-br/assuntos/noticias/RSS"]
+          for u in urls:
+              try:
+                  x=urllib.request.urlopen(urllib.request.Request(u,headers=B),timeout=30).read().decode("utf-8","replace")
+                  its=re.findall(r"<item>(.*?)</item>",x,re.S)
+                  print("OK",u,len(x),"itens",len(its))
+                  for it in its[:3]:
+                      print("   ",re.findall(r"<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</title>",it,re.S)[:1],re.findall(r"<pubDate>(.*?)</pubDate>",it))
+              except Exception as e: print("ERRO",u,e)
+          P
