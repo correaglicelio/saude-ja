@@ -7,7 +7,7 @@ jobs:
       - run: |
           U='https://www.gov.br/anvisa/++api++/pt-br/@search?portal_type=News%20Item&sort_on=effective&sort_order=reverse&b_size=3&metadata_fields=effective'
           B='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36'
-          t(){ echo "--- $1"; shift; curl -s -m 40 -o /tmp/o -w "%{http_code} %{size_download}\n" "$@" || true; head -c 200 /tmp/o; echo; }
+          t(){ echo "--- $1"; shift; curl -s -m 40 -o /tmp/o -w "%{http_code} %{size_download}\n" "$@" || true; head -c 200 /tmp/o 2>/dev/null || true; echo; }
           t "ua simples" -A "Mozilla/5.0 (compatible; SaudeJa/1.0)" -H "Accept: application/json" "$U"
           t "ua chrome" -A "$B" -H "Accept: application/json" "$U"
           t "http1.1 chrome" --http1.1 -A "$B" -H "Accept: application/json" -H "Accept-Language: pt-BR" "$U"
