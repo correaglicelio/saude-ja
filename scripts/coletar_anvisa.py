@@ -13,13 +13,13 @@ SAIDA = Path(__file__).resolve().parent.parent / "public" / "data" / "anvisa" / 
 
 def buscar(n: int):
     ult = None
-    for t in range(4):
+    for t in range(6):
         try:
             req = urllib.request.Request(BASE + QS.format(n=n), headers={"User-Agent": UA, "Accept": "application/json"})
             with urllib.request.urlopen(req, timeout=60) as r:
                 return json.loads(r.read())
         except Exception as e:  # noqa: BLE001
-            ult = e; time.sleep(5 * (t + 1))
+            ult = e; time.sleep(10 * (t + 1))
     raise SystemExit(f"Anvisa fora do ar: {ult}")
 
 def main():
