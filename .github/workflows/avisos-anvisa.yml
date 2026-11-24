@@ -3,7 +3,8 @@ name: Avisos da Anvisa
 
 on:
   schedule:
-    - cron: "43 11 * * *"   # todos os dias, 07:43 em Brasília
+    - cron: "43 11 * * *"   # todos os dias, 07:43 em Mato Grosso
+    - cron: "13 15 * * *"   # reserva (o GitHub às vezes pula um horário): 11:13; se nada mudou, não faz nada
   workflow_dispatch:
 
 permissions:
