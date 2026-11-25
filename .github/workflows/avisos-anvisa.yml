@@ -5,6 +5,7 @@ on:
   schedule:
     - cron: "43 11 * * *"   # todos os dias, 07:43 em Mato Grosso
     - cron: "13 15 * * *"   # reserva (o GitHub às vezes pula um horário): 11:13; se nada mudou, não faz nada
+    - cron: "13 17 * * *"   # tarde: 13:13 em Mato Grosso
   workflow_dispatch:
 
 permissions:
