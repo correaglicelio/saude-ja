@@ -9,7 +9,7 @@ from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
-DESTAQUE = re.compile(r"recolh|apreen|proíbe|proibe|suspende|suspens|interdi|falsific|alerta|surto", re.I)
+DESTAQUE = re.compile(r"recolh|apreen|proíbe|proibe|suspende|suspens|interdi|falsific|\balertas?\b|surto", re.I)
 SAIDA = Path(__file__).resolve().parent.parent / "public" / "data" / "anvisa" / "avisos.json"
 ANVISA = "https://www.gov.br/anvisa/++api++/pt-br/@search?portal_type=News%20Item&sort_on=effective&sort_order=reverse&b_size=25&metadata_fields=effective"
 RSS = [("Agência Brasil", "https://agenciabrasil.ebc.com.br/rss/saude/feed.xml"),
