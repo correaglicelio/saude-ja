@@ -1408,7 +1408,7 @@ body.ficha-aberta{overflow:hidden}
       <button type="button" data-view="transparencia" aria-pressed="false" data-tema="transp"><svg class="dico" aria-hidden="true"><use href="#d-transp"/></svg><span>Transparência</span></button>
       <button type="button" data-view="painel" aria-pressed="false"><svg class="dico" aria-hidden="true"><use href="#d-painel"/></svg><span>Painel</span></button>
     </nav>
-    <p class="rodape">Dados abertos do Ministério da Saúde e outras fontes oficiais.<br>Criado por <b>Glicélio Corrêa</b><br><a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 · Licença MIT<br><small>versão v19</small></p>
+    <p class="rodape">Dados abertos do Ministério da Saúde e outras fontes oficiais.<br>Criado por <b>Glicélio Corrêa</b><br><a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 · Licença MIT<br><small>versão v20</small></p>
   </header>
 
   <section class="where" aria-label="Escolher local">
@@ -1479,7 +1479,7 @@ body.ficha-aberta{overflow:hidden}
         </div>
         <div class="box" id="box-mun"><h3 id="t-mun">Municípios com mais unidades</h3><div class="tablewrap"><table id="tb-mun"></table></div></div>
         <p class="src" id="src"></p>
-        <p class="autoria">Criado por <b>Glicélio Corrêa</b> · <a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 Glicélio Corrêa · versão v19 · Código sob licença MIT</p>
+        <p class="autoria">Criado por <b>Glicélio Corrêa</b> · <a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 Glicélio Corrêa · versão v20 · Código sob licença MIT</p>
       </div>
     </div>
 
@@ -1871,7 +1871,8 @@ async function renderAnvisa(){
   if (!ANVISA || !ANVISA.itens || !ANVISA.itens.length){ box.hidden = true; return; }
   const pt = d => d.split("-").reverse().join("/");
   const dias = Math.floor((Date.now() - new Date(ANVISA.itens[0].d + "T12:00:00")) / 864e5);
-  $("#av-data").textContent = "atualizado em " + pt(ANVISA.coletado_em.slice(0, 10)) + (dias > 10 ? " · última notícia há " + dias + " dias" : "");
+  const conf = new Date(ANVISA.coletado_em).toLocaleDateString("pt-BR", {day:"2-digit", month:"2-digit", timeZone:"America/Cuiaba"});
+  $("#av-data").textContent = "conferido em " + conf + " · notícia mais recente: " + pt(ANVISA.itens[0].d).slice(0, 5) + (dias > 10 ? " (há " + dias + " dias)" : "");
   $("#av-lista").innerHTML = ANVISA.itens.slice(0, 6).map(i => `<li><span class="ad">${pt(i.d).slice(0, 5)}</span><a href="${esc(i.u)}" target="_blank" rel="noopener">${esc(i.t)}</a><span class="av-f">${i.f === "Anvisa" ? '<img src="anvisa-logo.png" alt="" width="14" height="12">' : ""}${esc(i.f || "Anvisa")}</span>${i.r ? '<span class="av-r">recolhimento / alerta</span>' : ""}</li>`).join("");
   box.hidden = false;
 }
