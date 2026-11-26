@@ -855,9 +855,11 @@ button{cursor:pointer}
 .avl{list-style:none; margin:0; padding:0; display:grid; gap:2px}
 .avl li{display:grid; grid-template-columns:auto 1fr; gap:2px 10px; padding:8px 0; border-top:1px solid var(--line); align-items:baseline}
 .avl li:first-child{border-top:0}
-.avl .ad{font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap}
+.avl .ad{grid-row:1 / span 3; align-self:start; display:grid; justify-items:center; padding-top:2px; font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap}
 .avl a{color:var(--text); text-decoration:none; font-weight:500; line-height:1.35}
 .avl a:hover{text-decoration:underline}
+.avl .av-ic{display:grid; place-items:center; width:38px; height:38px; margin-top:6px; border-radius:11px; background:color-mix(in srgb, var(--ic) 14%, transparent)}
+.avl .av-ic svg{width:26px; height:26px; --c1:color-mix(in srgb, var(--ic) 75%, var(--text)); --c2:color-mix(in srgb, var(--ic) 40%, var(--surface))}
 .avl .av-f{grid-column:2; justify-self:start; font-size:11px; color:var(--muted); display:inline-flex; align-items:center; gap:4px}
 .avl .av-f img{border-radius:2px; background:#fff}
 .avl .av-r{grid-column:2; justify-self:start; font-size:11px; font-weight:600; color:var(--bad); border:1px solid var(--bad); border-radius:99px; padding:0 7px}
@@ -1390,6 +1392,10 @@ body.ficha-aberta{overflow:hidden}
 <symbol id="d-painel" viewBox="0 0 32 32"><rect class="db" x="4" y="14" width="6" height="14" rx="2"/><rect class="da" x="13" y="5" width="6" height="23" rx="2"/><rect class="db" x="22" y="10" width="6" height="18" rx="2"/></symbol>
 <symbol id="d-aviso" viewBox="0 0 32 32"><path class="da" d="M16 4a8 8 0 0 0-8 8v5l-2.5 4.5h21L24 17v-5a8 8 0 0 0-8-8z"/><path class="db" d="M13 25a3 3 0 0 0 6 0"/></symbol>
 <symbol id="d-sangue" viewBox="0 0 32 32"><path class="da" d="M16 2.5S6 13.4 6 20a10 10 0 0 0 20 0c0-6.6-10-17.5-10-17.5z"/><path class="dw" d="M14.3 13.5h3.4v4h4v3.4h-4v4h-3.4v-4h-4v-3.4h4z"/></symbol>
+<symbol id="d-kit" viewBox="0 0 32 32"><path class="db" d="M11 9V7a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v2h-3V7h-4v2z"/><rect class="da" x="3" y="9" width="26" height="19" rx="4"/><path class="dw" d="M14.3 12.8h3.4v4h4v3.4h-4v4h-3.4v-4h-4v-3.4h4z"/></symbol>
+<symbol id="d-comida" viewBox="0 0 32 32"><rect class="db" x="9" y="3" width="14" height="6" rx="2"/><rect class="da" x="6" y="9" width="20" height="20" rx="5"/><rect class="dw" x="10" y="15" width="12" height="8" rx="2"/></symbol>
+<symbol id="d-ciencia" viewBox="0 0 32 32"><path class="db" d="M12.5 4h7v8.5l7.8 12.6A2.6 2.6 0 0 1 25 29H7a2.6 2.6 0 0 1-2.3-3.9l7.8-12.6z"/><path class="da" d="M9.5 20h13l4 6.4a1.2 1.2 0 0 1-1 1.9h-19a1.2 1.2 0 0 1-1-1.9z"/><rect class="da" x="10.5" y="2.5" width="11" height="3" rx="1.5"/></symbol>
+<symbol id="d-jornal" viewBox="0 0 32 32"><rect class="db" x="3" y="5" width="26" height="22" rx="4"/><rect class="da" x="7" y="9" width="10" height="8" rx="1.5"/><path class="da" d="M19 9h6v2.5h-6zm0 5h6v2.5h-6zM7 20h18v2.5H7z"/></symbol>
 <symbol id="d-logo" viewBox="0 0 48 48"><path fill="#0E9F6E" d="M24 2C13.5 2 5 10.3 5 20.6 5 33.4 24 46 24 46s19-12.6 19-25.4C43 10.3 34.5 2 24 2z"/><path fill="#0A7F59" d="M24 2c10.5 0 19 8.3 19 18.6C43 33.4 24 46 24 46z" opacity=".35"/><path fill="#fff" d="M21.2 10.5h5.6v7.3h7.3v5.6h-7.3v7.3h-5.6v-7.3h-7.3v-5.6h7.3z"/><path fill="#F2A516" d="M35.6 4.2 38 9.4l5.2 2.4-5.2 2.4-2.4 5.2-2.4-5.2-5.2-2.4 5.2-2.4z"/></symbol>
 </defs></svg>
 <div class="app" id="app" data-view="encontrar" data-mobile="lista">
@@ -1408,7 +1414,7 @@ body.ficha-aberta{overflow:hidden}
       <button type="button" data-view="transparencia" aria-pressed="false" data-tema="transp"><svg class="dico" aria-hidden="true"><use href="#d-transp"/></svg><span>Transparência</span></button>
       <button type="button" data-view="painel" aria-pressed="false"><svg class="dico" aria-hidden="true"><use href="#d-painel"/></svg><span>Painel</span></button>
     </nav>
-    <p class="rodape">Dados abertos do Ministério da Saúde e outras fontes oficiais.<br>Criado por <b>Glicélio Corrêa</b><br><a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 · Licença MIT<br><small>versão v20</small></p>
+    <p class="rodape">Dados abertos do Ministério da Saúde e outras fontes oficiais.<br>Criado por <b>Glicélio Corrêa</b><br><a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 · Licença MIT<br><small>versão v21</small></p>
   </header>
 
   <section class="where" aria-label="Escolher local">
@@ -1479,7 +1485,7 @@ body.ficha-aberta{overflow:hidden}
         </div>
         <div class="box" id="box-mun"><h3 id="t-mun">Municípios com mais unidades</h3><div class="tablewrap"><table id="tb-mun"></table></div></div>
         <p class="src" id="src"></p>
-        <p class="autoria">Criado por <b>Glicélio Corrêa</b> · <a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 Glicélio Corrêa · versão v20 · Código sob licença MIT</p>
+        <p class="autoria">Criado por <b>Glicélio Corrêa</b> · <a href="mailto:glicelio.santos@edu.mt.gov.br">glicelio.santos@edu.mt.gov.br</a><br>© 2026 Glicélio Corrêa · versão v21 · Código sob licença MIT</p>
       </div>
     </div>
 
@@ -1865,6 +1871,24 @@ function escopoPainel(){
   return rows.filter(r => S.grupos.has(GRUPO_DE[r[C.tipo]]) && (!S.sus || r[C.sus]) && (!S.h24 || r[C.turno] === "06") && (!S.uti || (LT(r) && LT(r)[2] > 0)));
 }
 let ANVISA;
+// ícone do assunto, escolhido pelas palavras do título (a primeira regra que combinar vale)
+const AV_ASSUNTOS = [
+  [/vacin|imuniza|sarampo|poliomielite/, "vacina", "#0E9F6E", "Vacinação"],
+  [/\bsangue|hemo(rio|centro|mt|bras)|doador|transfus/, "sangue", "#D7263D", "Sangue"],
+  [/dengue|chikungunya|zika|mosquito|aedes|malaria|febre amarela/, "mosq", "#6B7F1E", "Doenças por mosquito"],
+  [/suplemento|alimento|alimentar|bebida|leite|azeite|cafe\b|picole|chocolate|nutri/, "comida", "#D9730D", "Alimentos"],
+  [/agua|saneamento|enchente|chuva/, "agua", "#1D6FE0", "Água"],
+  [/medicament|remedio|farmac|canetas?\b|cannabis|anticoncepcional/, "remedio", "#7A3E8E", "Remédios"],
+  [/virus|gripe|covid|mpox|surto|epidemi|infec|bacteri|hanta|influenza/, "virus", "#B4531F", "Doenças"],
+  [/emergenc|socorro|kits?\b|samu|desastre|calamidade|tornado|ciclone/, "kit", "#C4302B", "Emergência"],
+  [/hospital|\bubs\b|\bsus\b|medicos?\b|atendimento|cirurgia|leitos?\b|transplante/, "pin", "#0B7A75", "Atendimento no SUS"],
+  [/pesquisa|ciencia|cientific|estudo|seminario|tecnolog|radis|inovac/, "ciencia", "#2B6CB0", "Ciência e pesquisa"]
+];
+function avIcone(t){
+  const s = t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const [, id, cor, nome] = AV_ASSUNTOS.find(a => a[0].test(s)) || [0, "jornal", "#5B6B75", "Notícia"];
+  return `<span class="av-ic" style="--ic:${cor}" title="${nome}"><svg class="dico" role="img" aria-label="${nome}"><use href="#d-${id}"/></svg></span>`;
+}
 async function renderAnvisa(){
   const box = $("#box-anvisa");
   if (ANVISA === undefined) ANVISA = await getJSON("data/anvisa/avisos.json").catch(() => null);
@@ -1873,7 +1897,7 @@ async function renderAnvisa(){
   const dias = Math.floor((Date.now() - new Date(ANVISA.itens[0].d + "T12:00:00")) / 864e5);
   const conf = new Date(ANVISA.coletado_em).toLocaleDateString("pt-BR", {day:"2-digit", month:"2-digit", timeZone:"America/Cuiaba"});
   $("#av-data").textContent = "conferido em " + conf + " · notícia mais recente: " + pt(ANVISA.itens[0].d).slice(0, 5) + (dias > 10 ? " (há " + dias + " dias)" : "");
-  $("#av-lista").innerHTML = ANVISA.itens.slice(0, 6).map(i => `<li><span class="ad">${pt(i.d).slice(0, 5)}</span><a href="${esc(i.u)}" target="_blank" rel="noopener">${esc(i.t)}</a><span class="av-f">${i.f === "Anvisa" ? '<img src="anvisa-logo.png" alt="" width="14" height="12">' : ""}${esc(i.f || "Anvisa")}</span>${i.r ? '<span class="av-r">recolhimento / alerta</span>' : ""}</li>`).join("");
+  $("#av-lista").innerHTML = ANVISA.itens.slice(0, 6).map(i => `<li><span class="ad">${pt(i.d).slice(0, 5)}${avIcone(i.t)}</span><a href="${esc(i.u)}" target="_blank" rel="noopener">${esc(i.t)}</a><span class="av-f">${i.f === "Anvisa" ? '<img src="anvisa-logo.png" alt="" width="14" height="12">' : ""}${esc(i.f || "Anvisa")}</span>${i.r ? '<span class="av-r">recolhimento / alerta</span>' : ""}</li>`).join("");
   box.hidden = false;
 }
 function renderPainel(){
